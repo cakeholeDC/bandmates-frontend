@@ -1,11 +1,14 @@
 import React from 'react'
 import { Card, Icon } from 'semantic-ui-react'
+import { withRouter } from 'react-router'
 
 class BandCard extends React.Component {
 	render(){
-		let { logo, name, bio, established, region, genre } = this.props
+		console.log(this.props)
+		let { logo, name, bio, established, region, genre, id } = this.props
 		return(
 		  <Card
+			onClick={()=> this.props.history.push(`/bands/${id}`)}
 		    image={ logo }
 		    header={ name }
 		    meta={`Established: ${ established }`}
@@ -15,4 +18,4 @@ class BandCard extends React.Component {
 	}
 }
 
-export default BandCard
+export default withRouter(BandCard)

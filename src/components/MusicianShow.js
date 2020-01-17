@@ -25,12 +25,12 @@ class MusicianShow extends React.Component {
 
                             <Segment>
                                 <p>{currentMusician.birthdate}</p>
-                                <p>{currentMusician.playing_since}</p>
-                                <p>{currentMusician.region}</p>
-                                <ul>
+                                <p>Playing Since: {currentMusician.playing_since}</p>
+                                <p>Region: {currentMusician.region}</p>
+                                <ul className="unstyled-list"><h3>Associated Bands</h3>
                                     {currentMusician.bands.map( band => <li key={Math.floor(Math.random() * 100000)}>{band.name}</li> )}
                                 </ul>
-                                <ul>
+                                <ul className="unstyled-list"><h3>Managed Bands</h3>
                                     {currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}> {band.name}</li>)}
                                 </ul>
                             </Segment>
@@ -41,7 +41,7 @@ class MusicianShow extends React.Component {
                             </Segment>
 
                             <Segment>
-                                <ul>
+                                <ul className="unstyled-list"><h3>Instruments</h3>
                                     {currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
                                 </ul>
                             </Segment>
@@ -52,7 +52,7 @@ class MusicianShow extends React.Component {
                         </Grid.Column>
                     </Grid.Row> 
                 </Grid> 
-                : <React.Fragment></React.Fragment> }
+                : null }
             </React.Fragment>
         )
     }

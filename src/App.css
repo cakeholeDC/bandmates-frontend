@@ -7,8 +7,12 @@
   pointer-events: none;
 }
 
-.bandScroll {
-  overflow-x: auto;
+ul {
+  padding-left: 0;
+}
+
+.unstyled-list {
+  list-style: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -1,0 +1,61 @@
+Band Builder / Bandmates. / Band Bros / Air Bnd / 
+
+As a user, I want to create a profile listing which instruments I play
+As a user, I want to start a band, and list the Instruments I want as part of that band
+As a user, I need to be able to add a new instrument type
+As a user, I want to browse for and be able to join a band
+As a user, I want to browse musicians by profile and/or instrument (and send them a message?)
+
+4 Models
+
+Musician
+ -has_many bandMembership
+ -has_many Instruments thorugh bandMembership
+ -has_many Bands thorugh bandMembership
+
+Intrument
+ -has_many bandMembership
+ -has_many Musicians thorugh bandMembership
+ -has_many Bands thorugh bandMembership
+
+Band
+ -has_many bandMembership
+ -has_many Instruments thorugh bandMembership
+ -has_many Musicians thorugh bandMembership
+
+bandMembership (3 way Join Table)
+ -belongs_to Musician
+ -belongs_to Band
+ -belongs_to Instrument
+
+ Routes
+ / = homepage
+ /login = login & signup (possible new signup route)
+ /bands
+  -/bands/:id
+ /musicians
+  -/musicians/:id
+
+
+
+ DATA
+
+ Musician
+ -name
+ -birthdate
+ -img
+ -bio
+ -playing_since
+ -region
+
+
+ Band
+ -name
+ -bio
+ -established
+ -region
+ -genre default DEATH JAM METAL
+ -logo
+
+Instrument
+ -name

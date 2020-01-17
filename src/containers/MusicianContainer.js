@@ -9,7 +9,7 @@ class MusicianContainer extends React.Component {
 			<React.Fragment>
 				<Header as='h1'>{this.props.match.url === '/' ? "Available Musicians" : "Musicians"}</Header>
 				<Card.Group itemsPerRow={4}>
-					{this.props.musicians.slice(0,4).map(musician => <Link to={`/musicians/${musician.id}`}> <MusicianCard {...musician} key={musician.id} /> </Link>)}
+					{this.props.musicians.map(musician => <MusicianCard {...musician} key={musician.id} />)}
 				</Card.Group>
 			</React.Fragment>
 

@@ -45,7 +45,7 @@ class BandContainer extends React.Component {
 				: null }
 			
 				<Card.Group itemsPerRow={4} className="bandScroll">
-					{ this.props.bands.map(band => <Link to={`/bands/${band.id}`}> <BandCard {...band} key={band.id}/> </Link>) }
+					{ this.props.bands.map(band => <BandCard {...band} key={band.id}/>) }
 				</Card.Group>
 			</React.Fragment>
 		)
