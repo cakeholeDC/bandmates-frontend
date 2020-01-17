@@ -1,33 +1,29 @@
 import React, { Component } from 'react'
 import ProfileActions from './ProfileActions'
 import { Menu } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
 
 class NavBar extends Component {
 	render(){
 		return (
 			<React.Fragment>
 		    	<Menu>
-			        <Menu.Item
-			          name='logo'
-			        >
-			          App Logo
-			        </Menu.Item>
+			        <NavLink to='/' exact>
+						<Menu.Item name='logo'>App Logo</Menu.Item>
+					</NavLink>
 
-			        <Menu.Item
-			          name='bands'
-			        >
-			          Browse Bands
-			        </Menu.Item>
+					<NavLink to='/bands' exact>
+			        	<Menu.Item name='bands'>Browse Bands</Menu.Item>
+					</NavLink>
 
-			        <Menu.Item
-			          name='musicians'
-			        >
-			          Browse Musicians
-			        </Menu.Item>
-			        <Menu.Menu position="right" >
-				        <Menu.Item>
-							<ProfileActions />
-						</Menu.Item>
+					<NavLink to='/musicians' exact>
+						<Menu.Item name='musicians'>Browse Musicians</Menu.Item>
+					</NavLink>
+
+					<Menu.Menu position="right" >
+						<NavLink to='/profile' exact>
+							<Menu.Item> <ProfileActions /> </Menu.Item>
+						</NavLink>
 					</Menu.Menu>
 		      	</Menu>
 			</React.Fragment>

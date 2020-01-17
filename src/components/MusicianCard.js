@@ -3,7 +3,7 @@ import { Card, Icon } from 'semantic-ui-react'
 
 class MusicianCard extends React.Component {
 	render(){
-		let { name, bio, img, birthdate, region, playing_since, bands, managed, instruments_played  } = this.props
+		let { name, bio, img, birthdate, region, playing_since, bands, managed, instruments_played } = this.props
 		return(
 		  <Card
 		    image={ img }
