@@ -41,12 +41,20 @@ class MainContainer extends React.Component {
 				</React.Fragment>
 				}/>
 				
+				
 				<Route path='/bands' exact render={ (routerProps) => 
 					<BandContainer 
 						{...routerProps} bands={this.state.bands} 
 					/>
 				} />
 				
+				<Route path='/bands/:id' exact render={ (routerProps) =>
+					<BandShow 
+						{...routerProps} allBands={this.state.bands} 
+					/> 
+				} />
+
+
 				<Route path='/musicians' exact render={ (routerProps) => 
 					<MusicianContainer 
 						{...routerProps} musicians={this.state.musicians} 
@@ -59,11 +67,6 @@ class MainContainer extends React.Component {
 					/>
 				} />
 
-				<Route path='/bands/:id' exact render={ (routerProps) =>
-					<BandShow 
-						{...routerProps} allBands={this.state.bands} 
-					/> 
-				} />
 			</Container>
 
 		)

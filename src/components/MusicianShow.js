@@ -1,5 +1,7 @@
 import React from 'react'
 import { Grid, Segment, Image, Header } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+
 
 
 class MusicianShow extends React.Component {
@@ -12,7 +14,6 @@ class MusicianShow extends React.Component {
         } else { 
             currentMusician = null
         }
-
         return (
             <React.Fragment>
             { currentMusician ?
@@ -27,27 +28,23 @@ class MusicianShow extends React.Component {
                                 <p>{currentMusician.birthdate}</p>
                                 <p>Playing Since: {currentMusician.playing_since}</p>
                                 <p>Region: {currentMusician.region}</p>
-                                <ul className="unstyled-list"><h3>Associated Bands</h3>
-                                    {currentMusician.bands.map( band => <li key={Math.floor(Math.random() * 100000)}>{band.name}</li> )}
-                                </ul>
-                                <ul className="unstyled-list"><h3>Managed Bands</h3>
-                                    {currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}> {band.name}</li>)}
-                                </ul>
                             </Segment>
                         </Grid.Column>
+
                         <Grid.Column>
                             <Segment>
                                 <Header as='h1'>{currentMusician.name}</Header>
-                            </Segment>
-
-                            <Segment>
                                 <ul className="unstyled-list"><h3>Instruments</h3>
                                     {currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
                                 </ul>
-                            </Segment>
-
-                            <Segment>
                                 <p>{currentMusician.bio}</p>
+                                <hr/>
+                                <ul className="unstyled-list"><h3>Associated Bands</h3>
+                                    {currentMusician.bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
+                                </ul>
+                                <ul className="unstyled-list"><h3>Managed Bands</h3>
+                                    {currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
+                                </ul>
                             </Segment>
                         </Grid.Column>
                     </Grid.Row> 
@@ -59,3 +56,5 @@ class MusicianShow extends React.Component {
 }
 
 export default MusicianShow
+
+

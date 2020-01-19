@@ -2,28 +2,38 @@ import React from 'react'
 import { Card, Header, Button } from 'semantic-ui-react'
 import BandCard from '../components/BandCard'
 import { Link } from 'react-router-dom'
+import BandForm from '../components/BandForm'
+
 
 class BandContainer extends React.Component {
 	constructor(){
 		super()
 		this.state = {
 			scrollStart: 0,
-			currentBands: []
+			displayedBands: 4,
+			currentBands: [],
 		}
 	}
 
-	scrollBands = () => {
-		const start = this.state.scrollStart
-		const end = this.state.scrollStart + 4
+	scrollBands = (event) => {
+		const adjustment = (event.target.name === "next" ? 0 : -8)
+		const start = this.state.scrollStart + adjustment
+		const end = start + this.state.displayedBands
 		console.log('scrollBands', start, end)
 		console.log(this.props.bands)
 		this.setState({
-			currentBands: [...this.props.bands.slice(start, end)],
+			currentBands: [...this.orderedBands.slice(start, end)],
 			scrollStart: end
 		})
 	}
 
+	orderedBands = () => {
+		return this.props.bands.sort((a,b) => (a.name > b.name) ? 1 : -1)
+	}
+
 	render(){
+		console.log(this.state.modal)
+
 		return (
 			<React.Fragment>
 				<Header as='h1'>{this.props.match.url === '/' ? "Bands Seeking Musicians" : "Bands"}</Header>
@@ -44,8 +54,11 @@ class BandContainer extends React.Component {
 				</React.Fragment>
 				: null }
 			
-				<Card.Group itemsPerRow={4} className="bandScroll">
-					{ this.props.bands.map(band => <BandCard {...band} key={band.id}/>) }
+				<Card.Group itemsPerRow={4}>
+						{ this.props.match.url === '/bands' ? 
+							<BandForm /> 
+						: null }
+						{ this.orderedBands().map(band => <BandCard {...band} key={band.id}/>) }
 				</Card.Group>
 			</React.Fragment>
 		)

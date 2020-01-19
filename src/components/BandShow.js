@@ -1,5 +1,7 @@
 import React from 'react'
-import { Grid, Segment, Image, Header, Item, Label, Icon, Button } from 'semantic-ui-react'
+import { Grid, Segment, Image, Header, Card, Label, Icon, Button, Divider } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+
 
 
 class BandShow extends React.Component {
@@ -13,44 +15,48 @@ class BandShow extends React.Component {
         } else { 
             currentBand = null
         }
-
+        console.log(currentBand)
         return (
             <React.Fragment>
             { currentBand ?
             	<React.Fragment>
+		            <Header as="h1">{currentBand.name}</Header>
 		        	<Grid columns={2} divided>
 		                <Grid.Row stretched>
 		                    <Grid.Column>
 		                        <Segment>
-		                            <Image src={currentBand.logo} alt={currentBand.name} />
+		                            <Image  wrapped size='medium' src={currentBand.logo} alt={currentBand.name} />
 		                        </Segment>
 		                    </Grid.Column>
 		                    <Grid.Column>
-		                        <Segment>
+		                        <Segment textAlign='left'>
+		                            <Header as="h3">{currentBand.name} was founded in {currentBand.established} in {currentBand.region} by {<Link to={`/musicians/${currentBand.band_leader.id}`}>{currentBand.band_leader.name}</Link>}</Header>
 		                            <p>{currentBand.bio}</p>
 		                        </Segment>
 		                    </Grid.Column>
 		                </Grid.Row> 
 		            </Grid> 
-	                <Item.Group divided>
+		            <Header as="h1">Lineup:</Header>
+		            <Divider />
+	                <Card.Group itemsPerRow={2} stackable>
 	                	{currentBand.band_memberships.map(member => {
 	                		console.log(member.musician ? member.musician : "no bio present")
 	                		return (
-	                			<Item key={member.id}>
-	                				<Item.Image src={member.musician ? member.musician.img : null} />
-									<Item.Content>
-										<Item.Header as='h1'>{member.instrument.name}</Item.Header>
-										<Item.Meta >{member.musician ? member.musician.name : "This could be YOU!"}</Item.Meta>
-										<Item.Description>{member.musician ? member.musician.bio : null}</Item.Description>
-										<Item.Extra>
-											{ !member.musician ? <Button size="massive" secondary floated="right">Request to Join</Button> : null }
-											{ member.musician ? <Button primary floated="right">View Profile</Button> : null }
-										</Item.Extra>
-									</Item.Content>
-		                		</Item>
+	                			<Card key={member.id}>
+	                				<Image size="mini" wrapped ui={false} src={member.musician ? member.musician.img : null } >{ member.musician ? null : <Icon name='signup' size='massive' />}</Image>
+									<Card.Content>
+										<Card.Header as='h1'>{member.instrument.name}</Card.Header>
+										<Card.Meta >{member.musician ? member.musician.name : "This could be YOU!"}</Card.Meta>
+										<Card.Description>{member.musician ? member.musician.bio : null}</Card.Description>
+									</Card.Content>
+									<Card.Content extra>
+										{ !member.musician ? <Button secondary >Request to Join</Button> : null }
+										{ member.musician ? <Link to={`/musicians/${member.musician.id}`}><Button primary >View Profile</Button></Link> : null }
+									</Card.Content>
+		                		</Card>
 	                		)
 	                	})}
-	                </Item.Group>
+	                </Card.Group>
                 </React.Fragment>
                 : null }
             </React.Fragment>
