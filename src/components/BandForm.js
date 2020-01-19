@@ -23,22 +23,31 @@ class BandForm extends React.Component {
 		})
 	}
 
+	handleFormChanges = (event) => {
+		console.log(event)
+	}
+
 	render(){
-		console.log(currentYear)
 		return(
 			<Card onClick={() => this.toggleModal()}>
 				<Image src='https://picsum.photos/500' wrapped ui={false} />
 			    <Card.Content>
-			      <Card.Header>Start a Band!</Card.Header>
-			      <Card.Meta>Established Today</Card.Meta>
-			      <Card.Description>Smalltown, USA
-					<Modal open={this.state.modal} >
+			      <Card.Header>Start a Band</Card.Header>
+			      <Card.Meta>Est. { currentYear }</Card.Meta>
+			      <Card.Description>
+			      	<p>Smalltown, USA</p>
+					<Modal 
+						open={this.state.modal}
+						closeOnEscape={true}
+			            closeOnDimmerClick={true}
+			            onClose={this.toggleModal}
+					 >
 					    <Modal.Header>Let's Jam!</Modal.Header>
 					    <Modal.Content image>
 					      <Image wrapped size='medium' src={this.state.logo ? this.state.logo : 'https://picsum.photos/500'} />
-					      <Modal.Description>
+					      <Modal.Description style={{width: "100%"}}>
 					        <Header>First Fill this out:</Header>
-					      	<Form>
+					      	<Form onChange={() => this.handleFormChanges() }>
 						        <Form.Group widths='equal'>
 						          <Form.Input fluid label='Band Name' placeholder='Delorean Ipsum' />
 						          <Form.Input fluid label='Region' placeholder='Scranton, PA' />
@@ -51,14 +60,8 @@ class BandForm extends React.Component {
 						        </Form.Group>
 						        <Form.Input fluid label='Logo' placeholder='www.sicklogos.com/yourband.jpg' />
 				                <Form.TextArea label='Bio' placeholder='Whats your story? Who are your influences? Make it interesting, potential members will see it!' />
-					        <p>
-					          We've found the following gravatar image associated with your e-mail
-					          address.
-					        </p>
-					        <p>
-				                <Form.Checkbox label='I agree to the Terms and Conditions' />
-			                </p>
-						        <Form.Button>Submit</Form.Button>
+					        <Form.Checkbox label="Check boxes look fancy, don't you agree?" />
+					        <Form.Button primary>🤘🏼Let's Rock!🤘🏼</Form.Button>
 					        </Form>
 					      </Modal.Description>
 					    </Modal.Content>
