@@ -1,7 +1,6 @@
 import React from 'react'
 import { Card, Header } from 'semantic-ui-react'
 import MusicianCard from '../components/MusicianCard'
-import { Link } from 'react-router-dom'
 
 class MusicianContainer extends React.Component {
 

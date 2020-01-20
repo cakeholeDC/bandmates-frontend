@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Header, Image, Modal, Form, Select, Input, Card } from 'semantic-ui-react'
+import { Header, Image, Modal, Form, Card } from 'semantic-ui-react'
 import musicQuotes from './music-quotes.js'
 import { Redirect } from 'react-router-dom'
 
@@ -85,7 +85,9 @@ class BandForm extends React.Component {
 			})
 			.then(band => {
 				console.log(band)
-				return <Redirect to={`/bands/${band.id}`} /> 
+				this.disableModal()
+				this.props.pushBand(band)
+				return <Redirect to={`/bands/${band.id}`} />
 			})
 			.catch(error => console.log(error.message))
 
@@ -129,7 +131,7 @@ class BandForm extends React.Component {
 						        <Form.Input fluid name="form_logo" label='Profile Photo' placeholder='www.sweetprofilepics.com/yourband.jpg'  value={ this.state.form_logo }/>
 				                <Form.TextArea name="form_bio" label='Bio' placeholder='Whats your story? Who are your influences? Make it interesting, potential members will see it!'  value={ this.state.form_bio }/>
 					        <Form.Checkbox name="form_checkbox" label="Check boxes are fancy, don't you agree?"  />
-					        <Form.Button primary>🤘🏼Let's Rock!🤘🏼</Form.Button>
+					        <Form.Button primary><span role="img" aria-label="rock-and-roll-horns">🤘🏼</span>Let's Rock!<span role="img" aria-label="rock-and-roll-horns">🤘🏼</span></Form.Button>
 					        </Form>
 					      </Modal.Description>
 					    </Modal.Content>

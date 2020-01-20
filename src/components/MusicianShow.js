@@ -2,49 +2,84 @@ import React from 'react'
 import { Grid, Segment, Image, Header } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
+const currentYear = (new Date().getFullYear())
+const MUSICIANS_URL = 'http://localhost:3000/musicians'
+
+
 
 
 class MusicianShow extends React.Component {
+    state={
+        currentMusician: null
+    }
+
+    componentDidMount(){
+        const id = this.props.match.params.id
+
+        fetch(`${MUSICIANS_URL}/${id}`)
+            .then(res => {
+                if (res.ok) {
+                    return res.json()
+                }
+            })
+            .then(musician => {
+                this.setState({
+                    currentMusician: musician
+                });
+            })
+    }
     
     render() {
 
-        let currentMusician
-        if (this.props.allMusicians.length >  0) {
-            currentMusician = this.props.allMusicians.find( musician => musician.id === parseInt(this.props.match.params.id, 10))
-        } else { 
-            currentMusician = null
-        }
+        // let currentMusician
+        // if (this.props.allMusicians.length >  0) {
+        //     currentMusician = this.props.allMusicians.find( musician => musician.id === parseInt(this.props.match.params.id, 10))
+        // } else { 
+        //     currentMusician = null
+        // }
         return (
             <React.Fragment>
-            { currentMusician ?
+            { this.state.currentMusician ?
                 <Grid columns={2} divided>
                     <Grid.Row stretched>
                         <Grid.Column>
                             <Segment>
-                                <Image src={currentMusician.img} alt={currentMusician.name} />
+                                <Image src={this.state.currentMusician.img} alt={this.state.currentMusician.name} />
                             </Segment>
 
                             <Segment>
-                                <p>{currentMusician.birthdate}</p>
-                                <p>Playing Since: {currentMusician.playing_since}</p>
-                                <p>Region: {currentMusician.region}</p>
+                                <p>Age: {currentYear - (new Date(this.state.currentMusician.birthdate).getFullYear() ) }</p>
+                                <p>Playing Since: {this.state.currentMusician.playing_since}</p>
+                                <p>Region: {this.state.currentMusician.region}</p>
+                            </Segment>
+                            <Segment>
+                                <p>Demos:</p>
+                                <iframe 
+                                    title="artist-demos"
+                                    width="100%" 
+                                    height="300" 
+                                    scrolling="no" 
+                                    frameborder="no" 
+                                    allow="autoplay" 
+                                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/942118192&color=%232165a6&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                             </Segment>
                         </Grid.Column>
 
                         <Grid.Column>
                             <Segment>
-                                <Header as='h1'>{currentMusician.name}</Header>
+                                <Header as='h1'>{this.state.currentMusician.name}</Header>
                                 <ul className="unstyled-list"><h3>Instruments</h3>
-                                    {currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
+                                    {this.state.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
                                 </ul>
-                                <p>{currentMusician.bio}</p>
-                                <hr/>
                                 <ul className="unstyled-list"><h3>Associated Bands</h3>
-                                    {currentMusician.bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
+                                    {this.state.currentMusician.bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Managed Bands</h3>
-                                    {currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
+                                    {this.state.currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
                                 </ul>
+                                <hr/>
+                                <Header as="h4">About {this.state.currentMusician.name}:</Header>
+                                <p>{this.state.currentMusician.bio}</p>
                             </Segment>
                         </Grid.Column>
                     </Grid.Row> 

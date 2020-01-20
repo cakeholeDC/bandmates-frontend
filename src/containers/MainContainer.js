@@ -2,9 +2,11 @@ import React from 'react'
 import BandContainer from './BandContainer'
 import MusicianContainer from './MusicianContainer'
 import { Divider, Container } from 'semantic-ui-react'
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import BandShow from '../components/BandShow'
 import MusicianShow from '../components/MusicianShow'
+// import PageNotFound from '../components/PageNotFound'
+
 
 
 const BANDS_URL = 'http://localhost:3000/bands'
@@ -26,6 +28,12 @@ class MainContainer extends React.Component {
 			.then(musicians  => this.setState({ musicians }))
 	}
 
+	pushBand = (newBand) => {
+		this.setState({
+			bands: [...this.state.bands, newBand]
+		})
+	}
+
 	render(){
 		return(
 			<Container>
@@ -44,7 +52,7 @@ class MainContainer extends React.Component {
 				
 				<Route path='/bands' exact render={ (routerProps) => 
 					<BandContainer 
-						{...routerProps} bands={this.state.bands} 
+						{...routerProps} bands={this.state.bands} pushBand={this.pushBand} 
 					/>
 				} />
 				
@@ -66,6 +74,7 @@ class MainContainer extends React.Component {
 						{...routerProps} allMusicians={this.state.musicians} 
 					/>
 				} />
+				{/*<Route path="/:any" component={PageNotFound} /> */}
 
 			</Container>
 

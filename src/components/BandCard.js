@@ -1,11 +1,11 @@
 import React from 'react'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
 import { withRouter } from 'react-router'
 
 class BandCard extends React.Component {
 
 	render(){
-		let { logo, name, bio, established, region, genre } = this.props
+		let { logo, name, established, region } = this.props
 
 		// logo = 'https://picsum.photos/700'
 		
