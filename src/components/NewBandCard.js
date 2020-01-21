@@ -30,7 +30,7 @@ class NewBandCard extends React.Component {
 
 	render(){
 		return(
-			<Card onClick={() => this.enableModal() }>
+			<Card color="green" onClick={() => this.enableModal() }>
 				<Image src='https://snworksceo.imgix.net/dpn-34s/83398a6b-f1b7-4b51-8ee0-b42d16f28a10.sized-1000x1000.jpg?w=1000' alt="start-a-band" wrapped ui={false} />
 			    <Card.Content>
 			      <Card.Header>Start a Band</Card.Header>
