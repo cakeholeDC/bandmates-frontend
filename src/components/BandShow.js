@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Segment, Image, Header, Card, Icon, Button, Divider } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import BandModal from './BandModal'
 // import PageNotFound from './PageNotFound'
 
 
@@ -13,9 +14,11 @@ const BANDS_URL = 'http://localhost:3000/bands'
 
 class BandShow extends React.Component {
 	state={
-		sessionUser: 6,
+		sessionUser: 13,
 		memberList: [],
-		currentBand: null
+		currentBand: null,
+		bandModal: false,
+		memberModal: false
 	}
 
 	handleDropMemberClick = (member) => {
@@ -112,14 +115,35 @@ class BandShow extends React.Component {
 		return this.state.memberList.sort((a,b) => (a.instrument.name > b.instrument.name) ? 1 : -1 )
 	}
 
+	enableModal = () => {
+		this.setState({
+			bandModal: true,
+		})
+	}
+
+	disableModal = () => {
+		this.setState({
+			bandModal: false
+		})
+	}
+
   
     render() {
-
+    	// let { logo, name, established, region, bio, band_leader } = this.state.currentBand
         return (
             <React.Fragment>
             { this.state.currentBand ?
             	<React.Fragment>
-		            { this.state.currentBand.band_leader.id === this.state.sessionUser ? <Button floated="right" >Edit Band</Button> : null}
+		            { 
+		            	this.state.currentBand.band_leader.id === this.state.sessionUser 
+		            		? <Button 
+		            			floated="right"
+		            			onClick={ () => this.enableModal() }
+	            			  >
+	            				Edit Band
+            				</Button> 
+		            		: null
+	            	}
 		            <Header as="h1">{this.state.currentBand.name}</Header>
 		        	<Grid columns={2} divided>
 		                <Grid.Row stretched>
@@ -131,19 +155,23 @@ class BandShow extends React.Component {
 		                    <Grid.Column>
 		                        <Segment textAlign='left'>
 		                            <Header as="h3">{this.state.currentBand.name} was founded in {this.state.currentBand.established} in {this.state.currentBand.region} by {<Link to={`/musicians/${this.state.currentBand.band_leader.id}`}>{this.state.currentBand.band_leader.name}</Link>}</Header>
+		                            <p>Genre: {this.state.currentBand.genre}</p>
 		                            <p>{this.state.currentBand.bio}</p>
+		                            <BandModal 
+		                            	formMethod="PATCH"
+		                            	formData={ this.state.currentBand }
+		                            	visible={ this.state.bandModal }
+		                            	disableModal={ this.disableModal }
+		                            	afterFormSubmit={ (band) => this.setState({ currentBand: (band)}) }/>
 		                        </Segment>
 		                    </Grid.Column>
 		                </Grid.Row>
 		            </Grid>
-	                <Grid columns={1} textAlign="center" >
-		                <Grid.Row stretched>
-				            <Header as="h1">Lineup:</Header>
-				            { this.state.currentBand.band_leader.id === this.state.sessionUser 
-				            	? <Button floated="right">Add Slot</Button> 
-				            	: null}
-				    	</Grid.Row>        
-	                </Grid> 
+				    <Divider />
+		            { this.state.currentBand.band_leader.id === this.state.sessionUser 
+		            	? <Button size="large" floated="right">Add Slot</Button> 
+		            	: null}
+		            <Header as="h1">Lineup:</Header>
 				    <Divider />
 	                <Card.Group itemsPerRow={2} stackable>
 	                	{this.sortMembers().map(member => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Header, Button } from 'semantic-ui-react'
 import BandCard from '../components/BandCard'
-import BandForm from '../components/BandForm'
+import NewBandCard from '../components/NewBandCard'
 
 
 class BandContainer extends React.Component {
@@ -55,7 +55,7 @@ class BandContainer extends React.Component {
 			
 				<Card.Group itemsPerRow={4}>
 						{ this.props.match.url === '/bands' ? 
-							<BandForm pushBand={this.props.pushBand}/> 
+							<NewBandCard pushBand={this.props.pushBand}/> 
 						: null }
 						{ this.orderedBands().map(band => <BandCard {...band} key={band.id}/>) }
 				</Card.Group>
