@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Segment, Image, Header } from 'semantic-ui-react'
+import { Grid, Segment, Image, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 const currentYear = (new Date().getFullYear())
@@ -14,9 +14,8 @@ class MusicianShow extends React.Component {
     }
 
     componentDidMount(){
-        const id = this.props.match.params.id
 
-        fetch(`${MUSICIANS_URL}/${id}`)
+        fetch(`${MUSICIANS_URL}/${this.props.match.params.id}`)
             .then(res => {
                 if (res.ok) {
                     return res.json()
@@ -51,6 +50,9 @@ class MusicianShow extends React.Component {
                                 <p>Age: {currentYear - (new Date(this.state.currentMusician.birthdate).getFullYear() ) }</p>
                                 <p>Playing Since: {this.state.currentMusician.playing_since}</p>
                                 <p>Region: {this.state.currentMusician.region}</p>
+                                { this.props.currentUser.id === this.state.currentMusician.id 
+                                    ? <Button negative>Delete Profile</Button>
+                                    : null}
                             </Segment>
                             <Segment>
                                 <p>Demos:</p>
@@ -67,12 +69,14 @@ class MusicianShow extends React.Component {
 
                         <Grid.Column>
                             <Segment>
-                                <Header as='h1'>{this.state.currentMusician.name}</Header>
+                                <Header as='h1'>{this.state.currentMusician.username}</Header>
+                                <p>{this.state.currentMusician.name}</p>
+                                
                                 <ul className="unstyled-list"><h3>Instruments</h3>
                                     {this.state.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Associated Bands</h3>
-                                    {this.state.currentMusician.bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
+                                    {this.state.currentMusician.associated_bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Managed Bands</h3>
                                     {this.state.currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}

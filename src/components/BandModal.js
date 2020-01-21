@@ -15,8 +15,8 @@ class BandModal extends React.Component {
     	form_bio: '',
     	form_established: `${currentYear}`,
     	form_genre: '',
-    	form_logo: null,
-    	form_musician_id: `${Math.floor(Math.random() * 14)}`,
+    	form_logo: '',
+    	form_musician_id: null,
     	form_valid: false
 	}
 	
@@ -37,6 +37,10 @@ class BandModal extends React.Component {
 		    	form_musician_id: this.props.formData.musician_id,
 		    	form_valid: false
 			})
+		} else {
+			if (this.props.currentUser) {
+				this.setState({ form_musician_id: this.props.currentUser.id})
+			}
 		}
 	}
 
@@ -101,7 +105,7 @@ class BandModal extends React.Component {
 			      <Modal.Description style={{width: "100%"}}>
 			        <Header>Band Details</Header>
 			      	<Form 
-			      		onChange={(event) => this.handleBandFormChanges(event) }
+			      		onChange={ (event) => this.handleBandFormChanges(event) }
 			      		onSubmit={ () => this.bandFormSubmit(this.props.formMethod) }
 		      		>
 				        <Form.Group widths='equal'>
@@ -115,7 +119,7 @@ class BandModal extends React.Component {
 				        }
 				        <Form.Input fluid name="form_logo" label='Profile Photo' placeholder='www.sweetprofilepics.com/yourband.jpg'  value={ this.state.form_logo }/>
 		                <Form.TextArea name="form_bio" label='Bio' placeholder='Whats your story? Who are your influences? Make it interesting, potential members will see it!'  value={ this.state.form_bio }/>
-			        <Form.Checkbox name="form_checkbox" label="Check boxes are fancy, don't you agree?"  />
+			        <Form.Checkbox name="form_checkbox" label="Check boxes are fancy, don't you agree?" checked={false} />
 			        <Form.Button floated="left" primary><span role="img" aria-label="rock-and-roll-horns">🤘🏼</span>{ this.props.formData ? "Submit Changes" : "Let's Rock!" }<span role="img" aria-label="rock-and-roll-horns"> 🤘🏼</span></Form.Button>
 			        {
 			        	this.props.formData 

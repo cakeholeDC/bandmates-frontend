@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid, Segment, Image, Header, Card, Icon, Button, Divider } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import BandModal from './BandModal'
-// import PageNotFound from './PageNotFound'
+import PageNotFound from './PageNotFound'
 
 
 // const currentYear = (new Date().getFullYear())
@@ -231,7 +231,7 @@ class BandShow extends React.Component {
 	                	})}
 	                </Card.Group>
                 </React.Fragment>
-                : null }
+                : <PageNotFound /> }
             </React.Fragment>
 
 

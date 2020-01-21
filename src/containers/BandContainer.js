@@ -55,7 +55,7 @@ class BandContainer extends React.Component {
 			
 				<Card.Group itemsPerRow={4}>
 						{ this.props.match.url === '/bands' ? 
-							<NewBandCard pushBand={this.props.pushBand}/> 
+							<NewBandCard pushBand={this.props.pushBand} currentUser={this.props.currentUser}/> 
 						: null }
 						{ this.orderedBands().map(band => <BandCard {...band} key={band.id}/>) }
 				</Card.Group>

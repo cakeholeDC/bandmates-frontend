@@ -5,12 +5,12 @@ import { withRouter } from 'react-router'
 
 class MusicianCard extends React.Component {
 	render(){
-		let { name, img, region, playing_since, instruments_played, id } = this.props
+		let { username, img, region, playing_since, instruments_played, id } = this.props
 		return(
 		  <Card
 		    onClick={()=> this.props.history.push(`/musicians/${id}`)}
 		    image={ img }
-		    header={ name }
+		    header={ username }
 		    meta={ region }
 		    description={ instruments_played.map(inst => inst.name).join(', ') }
 		    extra={`Playing Since: ${ playing_since }`}

@@ -1,9 +1,24 @@
 import React, { Component } from 'react'
-import ProfileActions from './ProfileActions'
-import { Menu } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
+// import ProfileActions from './ProfileActions'
+import { Menu, Button } from 'semantic-ui-react'
+import { NavLink, Link } from 'react-router-dom'
+import LogInForm from '../components/LogInForm'
+
+
 
 class NavBar extends Component {
+	state={
+		logInModal: false,
+	}
+
+	disableLogInForm = () => {
+		this.setState({ logInModal: false})
+	}
+
+	enableLogInForm = () => {
+		this.setState({ logInModal: true})
+	}
+
 	render(){
 		return (
 			<React.Fragment>
@@ -21,9 +36,22 @@ class NavBar extends Component {
 					</NavLink>
 
 					<Menu.Menu position="right" >
-						<NavLink to='/profile' exact>
-							<Menu.Item> <ProfileActions /> </Menu.Item>
-						</NavLink>
+							<Menu.Item>
+								<LogInForm 
+									logInModal={ this.state.logInModal } 
+									disableLogInForm={ this.disableLogInForm }
+									processLoginForm={ this.props.processLoginForm }
+							      	processNewUserForm={ this.props.processNewUserForm }
+								/>
+								{
+									!this.props.currentUser 
+										? <Button positive onClick={ this.enableLogInForm }>Log In</Button>
+										: <React.Fragment>
+											<Link to={`/musicians/${this.props.currentUser.id}`}><Button primary>View Profile</Button></Link>
+											<Button negative onClick={ this.props.logOutUser }>Log Out</Button>
+										</React.Fragment>
+								}
+							</Menu.Item>
 					</Menu.Menu>
 		      	</Menu>
 			</React.Fragment>
@@ -32,6 +60,6 @@ class NavBar extends Component {
 	}
 }
 
-export default NavBar
+export default (NavBar)
 
 

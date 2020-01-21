@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react'
 class ProfileActions extends React.Component {
 	render(){
 		return(
-			<Button>View Profile</Button>
+			<Button>{this.props.currentUser ? "View Profile" : "Log In"}</Button>
 		)
 	}
 }

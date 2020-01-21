@@ -38,6 +38,7 @@ class NewBandCard extends React.Component {
 			      <Card.Description>
 			      	<p>Smalltown, USA</p>
 					<BandModal
+						currentUser={this.props.currentUser}
 						visible={ this.state.modal }
 						disableModal={ this.disableModal }
 						formMethod="POST"
