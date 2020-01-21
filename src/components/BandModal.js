@@ -26,7 +26,7 @@ class BandModal extends React.Component {
 		// disableModal: callback
 		// formData: {[BAND]object} // is current band for controlledForm
 		if (this.props.formData) {
-			console.log("formData", this.props.formData)
+			// console.log("formData", this.props.formData)
 			this.setState({
 				form_name: this.props.formData.name,
 		    	form_region: this.props.formData.region,
@@ -109,6 +109,10 @@ class BandModal extends React.Component {
 				          <Form.Input fluid name="form_region" label='Region' placeholder='Scranton, PA'  value={ this.state.form_region }/>
 				          <Form.Input fluid name="form_genre" label='Genre' placeholder='Goth Folk Metal' value={ this.state.form_genre }/>
 				        </Form.Group>
+				        { this.props.formData 
+				        	? <Form.Input fluid name="form_established" label="Year Established" placeholder="1999" value={ this.state.form_established }/>
+				        	: null
+				        }
 				        <Form.Input fluid name="form_logo" label='Profile Photo' placeholder='www.sweetprofilepics.com/yourband.jpg'  value={ this.state.form_logo }/>
 		                <Form.TextArea name="form_bio" label='Bio' placeholder='Whats your story? Who are your influences? Make it interesting, potential members will see it!'  value={ this.state.form_bio }/>
 			        <Form.Checkbox name="form_checkbox" label="Check boxes are fancy, don't you agree?"  />

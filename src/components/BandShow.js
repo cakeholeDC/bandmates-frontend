@@ -14,7 +14,7 @@ const BANDS_URL = 'http://localhost:3000/bands'
 
 class BandShow extends React.Component {
 	state={
-		sessionUser: 13,
+		sessionUser: 1,
 		memberList: [],
 		currentBand: null,
 		bandModal: false,
@@ -97,7 +97,8 @@ class BandShow extends React.Component {
 				}
 			})
 			.then(band => {
-				console.log(band);				
+				console.log("currentBand", band);				
+				console.log("bandLeader", band.band_leader);				
 				this.setState({
 					currentBand: band,
 					memberList: band.band_memberships
