@@ -2,21 +2,16 @@ import React from 'react'
 import { Card, Header, Button } from 'semantic-ui-react'
 import BandCard from '../components/BandCard'
 import NewBandCard from '../components/NewBandCard'
-import BandSearchBar from '../components/BandSearchBar'
+import SearchBar from '../components/SearchBar'
 
 class BandContainer extends React.Component {
 	constructor(){
 		super()
 		this.state = {
 			scrollStart: 0,
-			currentBands: [],
 			bandSearchTerm: '',
 
 		}
-	}
-	
-	orderedBands = () => {
-		return this.props.bands.sort((a,b) => (a.name > b.name) ? 1 : -1)
 	}
 
 	slicedBands = () => {
@@ -77,7 +72,7 @@ class BandContainer extends React.Component {
 						><i className="arrow right icon"></i>
 					</Button> 	
 				</React.Fragment>
-				: <BandSearchBar
+				: <SearchBar
 					onChange={this.onChange}
 				/> }
 			
