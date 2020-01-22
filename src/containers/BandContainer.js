@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Header, Button } from 'semantic-ui-react'
 import BandCard from '../components/BandCard'
 import NewBandCard from '../components/NewBandCard'
-
+import BandSearchBar from '../components/BandSearchBar'
 
 class BandContainer extends React.Component {
 	constructor(){
@@ -11,8 +11,10 @@ class BandContainer extends React.Component {
 			scrollStart: 0,
 			displayedBands: 4,
 			currentBands: [],
+			bandSearchTerm: '',
 		}
 	}
+
 
 	scrollBands = (event) => {
 		const adjustment = (event.target.name === "next" ? 0 : -8)
@@ -27,16 +29,26 @@ class BandContainer extends React.Component {
 	}
 
 	orderedBands = () => {
-		return this.props.bands.sort((a,b) => (a.name > b.name) ? 1 : -1)
+		return this.filteredBands().sort((a,b) => (a.name > b.name) ? 1 : -1)
+	}
+
+	filteredBands = () => {
+		return this.props.bands.filter( band => band.name.toLowerCase().includes(this.state.bandSearchTerm.toLowerCase()))
+	}
+
+	onChange = ( event ) => {
+		this.setState({
+			bandSearchTerm: event.target.value
+		})
 	}
 
 	render(){
-
 		return (
 			<React.Fragment>
 				<Header as='h1'>{this.props.match.url === '/' ? "Bands Seeking Musicians" : "Bands"}</Header>
 				{this.props.match.url === '/' ?
 				<React.Fragment>
+				
 					<Button 
 						floated="left" 
 						name="previous" 
@@ -50,7 +62,9 @@ class BandContainer extends React.Component {
 						>Next
 					</Button> 	
 				</React.Fragment>
-				: null }
+				: <BandSearchBar
+					onChange={this.onChange}
+				/> }
 			
 				<Card.Group itemsPerRow={4}>
 						{ this.props.match.url === '/bands' ? 
