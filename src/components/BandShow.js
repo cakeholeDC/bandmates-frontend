@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Segment, Image, Header, Card, Icon, Button, Divider } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import BandModal from './BandModal'
+import NewMemberForm from './NewMemberForm'
 import PageNotFound from './PageNotFound'
 
 
@@ -44,6 +45,7 @@ class BandShow extends React.Component {
 					memberList: band.band_memberships,
 					loading: false
 				});
+				this.props.setCurrentBand(band)
 			})
 	}
 
@@ -80,12 +82,7 @@ class BandShow extends React.Component {
 	}
 
 	handleOnJoinBand = (member) => {
-		// pick a random member
-		let memberId = Math.floor(Math.random() * 14)
-		while (memberId === this.props.currentUser){
-			//random user cannot be current
-			memberId = Math.floor(Math.random() * 14)
-		}
+		let musicianID = this.props.currentUser.id
 
 		const memberConfig = {
 			method: "PATCH",
@@ -94,7 +91,7 @@ class BandShow extends React.Component {
 				"Accepts": "application/json"
 			},
 			body: JSON.stringify({
-				musician_id: memberId
+				musician_id: musicianID
 			})
 		}
 
@@ -147,6 +144,7 @@ class BandShow extends React.Component {
 		            { 
 		            	this.state.currentBand.band_leader.id === this.props.currentUser.id 
 		            		? <Button 
+		            			secondary
 		            			floated="right"
 		            			onClick={ () => this.enableModal() }
 	            			  >
@@ -169,9 +167,13 @@ class BandShow extends React.Component {
 		                            <p>{this.state.currentBand.bio}</p>
 		                            <BandModal 
 		                            	processEditBandForm={ this.props.processEditBandForm }
+		                            	processNewBandForm={ this.props.processNewBandForm }
+		                            	processDeleteBand={ this.props.processDeleteBand }
 		                            	currentUser={ this.props.currentUser }
+		                            	currentBand={ this.props.currentBand }
 		                            	showBandFormModal={ this.state.showBandFormModal }
 		                            	disableModal={ this.disableModal }
+		                            	isNewBand={ false }
 		                            	formData={ this.state.currentBand }
 
 		                            	afterFormSubmit={ (band) => this.setState({ currentBand: (band)}) }/>
@@ -180,12 +182,15 @@ class BandShow extends React.Component {
 		                </Grid.Row>
 		            </Grid>
 				    <Divider />
-		            { this.state.currentBand.band_leader.id === this.props.currentUser 
-		            	? <Button size="large" floated="right">Add Slot</Button> 
+		            { this.state.currentBand.band_leader.id === this.props.currentUser.id 
+		            	? <NewMemberForm 
+		            		currentBand={ this.state.currentBand }
+		            		processNewMemberForm={ this.props.processNewMemberForm }
+		            		/> 
 		            	: null}
 		            <Header as="h1">Lineup:</Header>
 				    <Divider />
-	                <Card.Group itemsPerRow={2} stackable>
+	                <Card.Group itemsPerRow={3} stackable>
 	                	{this.sortMembers().map(member => {
 	                		return (
 	                			<Card key={member.id}>
@@ -193,7 +198,7 @@ class BandShow extends React.Component {
 										<Card.Header as='h1'>{member.instrument.name}</Card.Header>
 										<Divider />
 	                				</Card.Content>
-	                				<Image wrapped ui={false} src={member.musician ? member.musician.img : null } >{ member.musician ? null : <Icon name='signup' size='massive' />}</Image>
+	                				<Image wrapped ui={false} src={member.musician ? member.musician.img : 'http://ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png' } />
 									<Card.Content>
 										<Card.Header as='h1'>{ member.musician ? member.musician.name : "This could be YOU!"}</Card.Header>
 										<Card.Meta >{ member.musician ? member.musician.region : null }</Card.Meta>
@@ -206,7 +211,7 @@ class BandShow extends React.Component {
 									</Card.Content>
 									<Card.Content extra>
 										{/* band leader admin actions*/}
-										{ this.state.currentBand.band_leader.id === this.props.currentUser 
+										{ this.state.currentBand.band_leader.id === this.props.currentUser.id 
 
 											/* if the slot is filled, and the member is not the band leader
 											// add drop musician button */
@@ -215,7 +220,7 @@ class BandShow extends React.Component {
 													negative
 													onClick={() => this.handleDropMemberClick(member) }
 												>
-													Drop {member.musician.name}
+													Drop {member.musician.username}
 												</Button> 
 												: null
 											: null }
@@ -229,13 +234,13 @@ class BandShow extends React.Component {
 													>
 													Join Band
 												</Button> 
-												: null
+												: <Link to={`/musicians/${member.musician.id}`}><Button primary >View Profile</Button></Link> 
 										}
-										{
-											member.musician 
-												? <Link to={`/musicians/${member.musician.id}`}><Button primary >View Profile</Button></Link> 
-												: null
-										}
+										{/* ATTEMPT AT LEAVE BAND BUTTON FOR CURRENT USER
+											member.id === this.props.currentUser.id
+												? <Button negative onClick={ () => this.handleDropMemberClick(member) }>Leave Band</Button> 
+												: console.log("leaveBand=>",member.musician, this.props.currentUser.id)
+										*/}
 									</Card.Content>
 		                		</Card>
 	                		)

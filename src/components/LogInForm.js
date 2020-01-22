@@ -31,6 +31,8 @@ class LogInForm extends React.Component {
 		event.preventDefault()
 		console.log('LoginForm.js => processUserForm(event)', "event=>", event)
 
+		let fallbackImg = 'https://f4.bcbits.com/img/a1368582765_10.jpg'
+
 		let userFormData
 		if (this.state.newAccount){
 			//process new user
@@ -41,7 +43,7 @@ class LogInForm extends React.Component {
 				region: this.state.region,
 				playing_since: this.state.playing_since,
 				birthdate: this.state.birthdate,
-				img: this.state.img,
+				img: this.state.img !== '' ? this.state.img : fallbackImg,
 				bio: this.state.bio
 			}
 			this.props.processNewUserForm(userFormData)
@@ -61,13 +63,13 @@ class LogInForm extends React.Component {
 				open={ this.props.logInModal }
 				closeOnEscape={true}
 	            closeOnDimmerClick={true}
-	            onClose={ () => this.props.disableModal() }
+	            onClose={ this.props.disableLogInForm }
 			 >
 			    <Modal.Header>"{ this.state.modal_quote.quote }"
 			    	<p><em><small>-{ this.state.modal_quote.author }</small></em></p>
 			    </Modal.Header>
 			    <Modal.Content image>
-			      <Image wrapped size='medium' src={'https://picsum.photos/500'} />
+			      <Image wrapped size='medium' src={ this.state.img ? this.state.img : 'https://picsum.photos/500'} />
 			      <Modal.Description style={{width: "100%"}}>
 			        <Header>Profile Details</Header>
 					<Form
@@ -136,7 +138,7 @@ class LogInForm extends React.Component {
 							this.state.newAccount
 							? <React.Fragment> 
 								<Button type="submit" floated="right" onClick={ this.processUserForm } primary >Sign Up</Button>
-								<Button type="submit" floated="left" onClick={ () => this.setState({ newAccount: !this.state.newAccount }) } negative >Cancel</Button>
+								<Button type="submit" floated="left" onClick={ () => this.setState({ newAccount: !this.state.newAccount }) } negative >Back to Sign In</Button>
 							</React.Fragment>
 							: <Button.Group floated="right">
 							    <Button type="submit" onClick={ this.processUserForm } primary >

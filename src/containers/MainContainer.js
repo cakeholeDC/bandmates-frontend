@@ -10,13 +10,6 @@ import PageNotFound from '../components/PageNotFound'
 
 class MainContainer extends React.Component {
 
-	// refactor
-	pushBand = (newBand) => {
-		this.setState({
-			bands: [...this.props.bands, newBand]
-		})
-	}
-
 	render(){
 		return(
 			<Container>
@@ -28,10 +21,14 @@ class MainContainer extends React.Component {
 								<BandShow 
 									{...routerProps}
 									processEditBandForm={ this.props.processEditBandForm } 
+									processDeleteBand={ this.props.processDeleteBand }
 									allBands={this.props.bands} 
 									currentUser={this.props.currentUser}
-									//not using yet.....
 									currentBand={this.props.currentBand}
+									setCurrentBand={ this.props.setCurrentBand }
+									processNewMemberForm={ this.props.processNewMemberForm }
+									processNewBandForm={ this.props.processNewBandForm }
+									//not using yet.....
 								/> 
 							} />
 							
