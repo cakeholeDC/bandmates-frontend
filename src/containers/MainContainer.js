@@ -7,8 +7,6 @@ import BandShow from '../components/BandShow'
 import MusicianShow from '../components/MusicianShow'
 import PageNotFound from '../components/PageNotFound'
 
-
-
 class MainContainer extends React.Component {
 
 	render(){

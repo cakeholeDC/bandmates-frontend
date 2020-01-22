@@ -1,14 +1,29 @@
 import React from 'react'
 import { Card, Header, Button } from 'semantic-ui-react'
 import MusicianCard from '../components/MusicianCard'
+import SearchBar from '../components/SearchBar'
 
 class MusicianContainer extends React.Component {
-	state = {
+	constructor() {
+		super()
+		this.state = {
 			scrollStart: 0,
+			musicianSearchTerm: '',
 		}
+	}
+
+	filteredMusicians = () => {
+		return this.props.musicians.filter( musician => musician.username.toLowerCase().includes(this.state.musicianSearchTerm.toLowerCase()))
+	}
 
 	orderedMusicians = () => {
-		return this.props.musicians.sort((a, b) => (a.username > b.username) ? 1 : -1)
+		return this.filteredMusicians().sort((a,b) => (a.name > b.name) ? 1 : -1)
+	}
+
+	onChange = ( event ) => {
+		this.setState({
+			musicianSearchTerm: event.target.value
+		})
 	}
 
 	slicedMusicians = () => {
@@ -52,7 +67,9 @@ class MusicianContainer extends React.Component {
 						><i className="arrow right icon"></i>
 					</Button> 	
 				</React.Fragment>
-				: null }
+				: <SearchBar
+					onChange={this.onChange}
+				/>  }
 				<Card.Group itemsPerRow={4}>
 					{ this.props.match.url === '/' 
 						? this.slicedMusicians().map(musician => <MusicianCard {...musician} key={musician.id} />)
