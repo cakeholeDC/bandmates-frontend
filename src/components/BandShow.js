@@ -195,7 +195,7 @@ class BandShow extends React.Component {
 	                	})}
 	                </Card.Group>
                 </React.Fragment>
-                : `${ this.state.loading ? `Sorry, we're a little slow processing all of this awesomeness...` : <PageNotFound /> }`
+                : <PageNotFound />
             }
             </React.Fragment>
 

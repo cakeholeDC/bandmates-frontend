@@ -3,6 +3,7 @@ import { Grid, Segment, Image, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import PageNotFound from './PageNotFound'
 
+
 const currentYear = (new Date().getFullYear())
 
 class MusicianShow extends React.Component {
@@ -26,16 +27,16 @@ class MusicianShow extends React.Component {
                                 <Image src={this.props.currentMusician.img} alt={this.props.currentMusician.name} />
                             </Segment>
                             { this.props.currentUser && this.props.currentUser.id === this.props.currentMusician.id 
-                                    ? <React.Fragment>
-                                        <Button 
-                                            negative
-                                            onClick={ () => this.props.deleteMusician(this.props.currentUser.id)}    
-                                            >Delete Profile
-                                        </Button>
-                                        <Button positive>Edit Profile</Button>
-                                        </React.Fragment>
-                                    : null}
-
+                                ? <React.Fragment>
+                                    <Button 
+                                        negative
+                                        onClick={ () => this.props.deleteMusician(this.props.currentUser.id)}    
+                                        >Delete Profile
+                                    </Button>
+                                    <Button positive>Edit Profile</Button>
+                                    </React.Fragment>
+                                : null
+                            }
                             <Segment>
                                 <p>Age: {currentYear - (new Date(this.props.currentMusician.birthdate).getFullYear() ) }</p>
                                 <p>Playing Since: {this.props.currentMusician.playing_since}</p>
@@ -91,7 +92,7 @@ class MusicianShow extends React.Component {
                         </Grid.Column>
                     </Grid.Row> 
                 </Grid> 
-                : null}
+                : <PageNotFound /> }
             </React.Fragment>
         )
     }
