@@ -10,7 +10,7 @@ const currentYear = (new Date().getFullYear())
 class BandModal extends React.Component {
 	state={
 		modal_quote: MUSIC_QUOTES[Math.floor(Math.random() * MUSIC_QUOTES.length)],
-		isNewBand: true,
+		form_id: null,
 		form_name: '',
     	form_region: '',
     	form_bio: '',
@@ -26,6 +26,7 @@ class BandModal extends React.Component {
 		if (this.props.formData) {
 			// console.log("formData", this.props.formData)
 			this.setState({
+				form_id: this.props.formData.id,
 				form_name: this.props.formData.name,
 		    	form_region: this.props.formData.region,
 		    	form_bio: this.props.formData.bio,
@@ -34,7 +35,6 @@ class BandModal extends React.Component {
 		    	form_logo: this.props.formData.logo,
 		    	form_musician_id: this.props.formData.musician_id,
 		    	form_valid: false,
-		    	isNewBand: false
 			})
 		} else {
 			if (this.props.currentUser) {
@@ -48,11 +48,6 @@ class BandModal extends React.Component {
 			[event.target.name]: event.target.value
 		})
 	}
-
-	// handleFormSubmit = () => {
-	// 	if (this.props.isNewBand)  ? this.handleNewBandFormSubmit : this.handleEditBandFormSubmit
-	// 	}
-	// }
 
 	handleNewBandFormSubmit = () => {
 
@@ -76,6 +71,7 @@ class BandModal extends React.Component {
 		const fallbackLogo = 'https://www.alltop.com/viral/wp-content/uploads/2013/10/Fotolia_40337302_Subscription_XXL-500x353.jpg'
 
 		const editBandFormData = {
+			id: this.state.form_id,
 			name: this.state.form_name,
 		    bio: this.state.form_bio,
 		    established: this.state.form_established,
@@ -88,6 +84,13 @@ class BandModal extends React.Component {
 		console.log(editBandFormData)
 		this.props.disableModal()
 	}
+
+	handleDeleteBand = () => {
+		console.log(this.props.currentBand)
+		this.props.processDeleteBand(this.props.currentBand)
+		this.props.disableModal()
+	}
+
 
 	render(){
 		return(
@@ -121,17 +124,17 @@ class BandModal extends React.Component {
 		                <Form.TextArea name="form_bio" label='Bio' placeholder='Whats your story? Who are your influences? Make it interesting, potential members will see it!'  value={ this.state.form_bio }/>
 			        <Form.Checkbox name="form_checkbox" label="Check boxes are fancy, don't you agree?" checked={false} />
 			        <Form.Button floated="left" primary><span role="img" aria-label="rock-and-roll-horns">🤘🏼</span>{ this.props.formData ? "Submit Changes" : "Let's Rock!" }<span role="img" aria-label="rock-and-roll-horns"> 🤘🏼</span></Form.Button>
+			        </Form>
 			        {
 			        	this.props.formData 
 			        		? <Button 
 			        			negative
 			        			floated="right"
-			        			onClick={() => alert("you can't do that yet... sorry 🤷‍♂️")}>
+			        			onClick={ this.handleDeleteBand }>
 			        		  Break Up Band
 			        		</Button>
 			        		: null
 		        	}
-			        </Form>
 			      </Modal.Description>
 			    </Modal.Content>
 	    	</Modal>

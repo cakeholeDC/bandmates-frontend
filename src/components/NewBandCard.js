@@ -42,6 +42,7 @@ class NewBandCard extends React.Component {
 						currentUser={this.props.currentUser}
 						showBandFormModal={ this.state.showBandFormModal }
 						disableModal={ this.disableModal }
+						isNewBand={ true }
 						
 						afterFormSubmit={ (band) => this.props.pushBand(band) }/>
 				  </Card.Description>

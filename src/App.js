@@ -5,6 +5,8 @@ import MainContainer from './containers/MainContainer'
 
 const BANDS_URL = 'http://localhost:3000/bands'
 const MUSICIANS_URL = 'http://localhost:3000/musicians'
+const MEMBERS_URL = 'http://localhost:3000/band_memberships'
+
 
 class App extends React.Component {
 	state={
@@ -59,7 +61,6 @@ class App extends React.Component {
 			.then(res => res.json())
 			.then(createdMusician => {
 				localStorage.setItem("token", createdMusician.jwt)
-
 				this.setState({
 					currentUser: JSON.parse(createdMusician.currentUser),
 					musicians: [...this.state.musicians, JSON.parse(createdMusician.currentUser)]
@@ -88,6 +89,10 @@ class App extends React.Component {
 					alert(apiResponse.message)
 				}
 			})
+	}
+
+	setCurrentBand = (currentBand) => {
+		this.setState({ currentBand })
 	}
 
 	logOutUser = () => {
@@ -120,7 +125,7 @@ class App extends React.Component {
 		console.log('processing edit =>', data)
 		
 		const editBandConfig = {
-			method: "POST",
+			method: "PATCH",
 			headers: {
 				'Content-Type': "application/json",
 				"Accepts" : "application/json"
@@ -128,7 +133,7 @@ class App extends React.Component {
 			body: JSON.stringify(data)
 		}
 
-		fetch(BANDS_URL, editBandConfig)
+		fetch(`${BANDS_URL}/${data.id}`, editBandConfig)
 			.then(response => response.json())
 			.then(band => {
 				console.log("processEditBand => ", band)
@@ -136,7 +141,45 @@ class App extends React.Component {
 					bands: [...this.state.bands.filter(oldBand => oldBand.id !== band.id), band]
 				})
 			})
-	} 
+	}
+
+	processNewMemberForm = (data) => {
+		console.log("newMember=>", data)
+		fetch(MEMBERS_URL, {
+			method: "POST",
+			headers: {
+				'Content-Type': "application/json",
+				"Accepts" : "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+		.then(res => res.json())
+		.then(band => {
+			console.log("processNewMemberForm => ", band)
+			this.setState({
+				bands: [...this.state.bands.filter(oldBand => oldBand.id !== band.id), band]
+			})
+		})
+	}
+
+	processDeleteBand = (data) => {
+		let okToDelete = window.confirm("Easy there, Yoko. Are you sure you want to do that?")
+
+		if (okToDelete) {
+			console.log('processDeleteBand=>',data)
+			fetch(`${BANDS_URL}/${data.id}`, {
+				method: "DELETE",
+				headers: {
+					'Content-Type': "application/json",
+					"Accepts" : "application/json"
+				}
+			})
+			.then( this.setState({ 
+					bands: [...this.state.bands.filter(oldBand => oldBand.id !== data.id)]
+				})
+			)
+		}
+	}
 
 	render(){
 	  return (
@@ -151,9 +194,12 @@ class App extends React.Component {
 		    bands={ this.state.bands }
 		    processNewBandForm={ this.processNewBandForm }
 		    processEditBandForm={ this.processEditBandForm }
+		    processDeleteBand={ this.processDeleteBand }
+		    processNewMemberForm={ this.processNewMemberForm }
 		    musicians={ this.state.musicians }
 	      	isLoading={ this.state.loading }
 	      	currentUser={ this.state.currentUser }
+	      	setCurrentBand={ this.setCurrentBand }
 	      	currentBand={ this.state.currentBand }
       	/>
 	    </div>
