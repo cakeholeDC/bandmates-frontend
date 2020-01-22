@@ -44,33 +44,23 @@ class MusicianShow extends React.Component {
                         <Grid.Column>
                             <Segment>
                                 <Image src={this.state.currentMusician.img} alt={this.state.currentMusician.name} />
+                                <Header as='h1'>Stage Name: {this.state.currentMusician.username}</Header>
                             </Segment>
+                                { this.props.currentUser && this.props.currentUser.id === this.state.currentMusician.id 
+                                    ? <Button negative>Delete Profile</Button>
+                                    : null}
 
                             <Segment>
                                 <p>Age: {currentYear - (new Date(this.state.currentMusician.birthdate).getFullYear() ) }</p>
                                 <p>Playing Since: {this.state.currentMusician.playing_since}</p>
                                 <p>Region: {this.state.currentMusician.region}</p>
-                                { this.props.currentUser && this.props.currentUser.id === this.state.currentMusician.id 
-                                    ? <Button negative>Delete Profile</Button>
-                                    : null}
                             </Segment>
-                            <Segment>
-                                <p>Demos:</p>
-                                <iframe 
-                                    title="artist-demos"
-                                    width="100%" 
-                                    height="300" 
-                                    scrolling="no" 
-                                    frameBorder="no" 
-                                    allow="autoplay" 
-                                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/942118192&color=%232165a6&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-                            </Segment>
+                            
                         </Grid.Column>
 
                         <Grid.Column>
                             <Segment>
-                                <Header as='h1'>{this.state.currentMusician.username}</Header>
-                                <p>{this.state.currentMusician.name}</p>
+                                <Header as='h1'>{this.state.currentMusician.name}</Header>
                                 
                                 <ul className="unstyled-list"><h3>Instruments</h3>
                                     {this.state.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
@@ -84,6 +74,17 @@ class MusicianShow extends React.Component {
                                 <hr/>
                                 <Header as="h4">About {this.state.currentMusician.name}:</Header>
                                 <p>{this.state.currentMusician.bio}</p>
+                            </Segment>
+                            <Segment>
+                                <p>Demos:</p>
+                                <iframe 
+                                    title="artist-demos"
+                                    width="100%" 
+                                    height="300" 
+                                    scrolling="no" 
+                                    frameBorder="no" 
+                                    allow="autoplay" 
+                                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/942118192&color=%232165a6&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                             </Segment>
                         </Grid.Column>
                     </Grid.Row> 

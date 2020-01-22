@@ -56,7 +56,7 @@ class BandContainer extends React.Component {
 	render(){
 		return (
 			<React.Fragment>
-				<Header as='h1'>{this.props.match.url === '/' ? "Bands Seeking Musicians" : "Bands"}</Header>
+				<Header className="main-header" as='h1'>{this.props.match.url === '/' ? "Bands Seeking Musicians" : "Bands"}</Header>
 				{this.props.match.url === '/' ?
 				<React.Fragment>
 				

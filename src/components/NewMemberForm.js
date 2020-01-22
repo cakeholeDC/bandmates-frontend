@@ -30,8 +30,8 @@ class NewMemberForm extends React.Component {
 		return(
 			<React.Fragment>
 				<Button 
-	        		size="large" 
-	        		floated="right"
+					positive
+					
 	        		onClick={ () => this.setState({ showModal: true}) }
 	    		>
 	    			Add Slot

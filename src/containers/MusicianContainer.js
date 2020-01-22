@@ -32,7 +32,7 @@ class MusicianContainer extends React.Component {
 	render(){
 		return (
 			<React.Fragment>
-				<Header as='h1'>{this.props.match.url === '/' ? "Available Musicians" : "Musicians"}</Header>
+				<Header className="main-header" as='h1'>{this.props.match.url === '/' ? "Available Musicians" : "Musicians"}</Header>
 				{this.props.match.url === '/' ?
 				<React.Fragment>
 					<Button 

@@ -1,10 +1,59 @@
 #search-form {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border-radius: 25px;
+}
+
+#edit-band-btn {
+  margin-bottom: 10px;
+}
+
+i.search.icon {
+  margin-top: -10px;
+}
+
+button.ui.positive.button,
+button.ui.positive.button:hover {
+  background-color: #146675;
+}
+
+button.ui.negative.button,
+button.ui.negative.button:hover {
+  background-color: #811923;
+}
+
+button.ui.primary.button,
+button.ui.primary.button:hover {
+  background-color: #146675;
+}
+
+button.ui.secondary.button,
+button.ui.secondary.button:hover {
+  background-color: #146675;
+}
+
+/*button.ui.button,
+button.ui.button:hover {
+  background-color: #FDF6FF;
+}*/
+
+#bandmates-nav-bar{
+  background-color: #000236;
+  color: white;
 }
 
 .App {
   text-align: center;
+  background-image: url(https://www.samash.com/spotlight/files/2019/05/applause-audience-band-167636.jpeg);
+  background-attachment: fixed;
+  /*background-position: scroll;*/
+  background-repeat: no-repeat;
+}
+
+h1.ui.main-header,
+h1.ui.header {
+  background-color: rgba(255, 255, 255, .6);
+  border-radius: 10px;
+  /*color: #04AAC1;*/
 }
 
 .App-logo {
