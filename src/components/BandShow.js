@@ -14,12 +14,44 @@ const BANDS_URL = 'http://localhost:3000/bands'
 
 class BandShow extends React.Component {
 	state={
-		sessionUser: 1,
+		loading: true,
 		memberList: [],
 		currentBand: null,
-		bandModal: false,
+		showBandFormModal: false,
 		memberModal: false
 	}
+
+	componentDidMount(){
+		// set current band by filtering the list
+		// const currentBand = this.props.allBands.find( band => band.id === parseInt(this.props.match.params.id, 10))
+		// console.log("currentBand = ", currentBand)
+
+		//set current band by fetching => performs better when sent directly to the band page.
+		const id = this.props.match.params.id
+
+		fetch(`${BANDS_URL}/${id}`)
+			.then(res => {
+				if (res.ok) {
+					return res.json()
+				}
+			})
+			.then(band => {
+				console.log("currentBand", band);				
+				console.log("bandLeader", band.band_leader);				
+				console.log("members", band.band_memberships);				
+				this.setState({
+					currentBand: band,
+					memberList: band.band_memberships,
+					loading: false
+				});
+			})
+	}
+
+	// componentDidUpdate = () => {
+		// if (this.props.currentBand){
+		// 	this.setState({ currentBand: this.props.currentBand })
+		// }
+	// }
 
 	handleDropMemberClick = (member) => {
 		const memberConfig = {
@@ -50,7 +82,7 @@ class BandShow extends React.Component {
 	handleOnJoinBand = (member) => {
 		// pick a random member
 		let memberId = Math.floor(Math.random() * 14)
-		while (memberId === this.state.sessionUser){
+		while (memberId === this.props.currentUser){
 			//random user cannot be current
 			memberId = Math.floor(Math.random() * 14)
 		}
@@ -82,29 +114,6 @@ class BandShow extends React.Component {
 
 	}
 
-	componentDidMount(){
-		// set current band by filtering the list
-		// const currentBand = this.props.allBands.find( band => band.id === parseInt(this.props.match.params.id, 10))
-		// console.log("currentBand = ", currentBand)
-		
-		//set current band by fetching => performs better when sent directly to the band page.
-		const id = this.props.match.params.id
-
-		fetch(`${BANDS_URL}/${id}`)
-			.then(res => {
-				if (res.ok) {
-					return res.json()
-				}
-			})
-			.then(band => {
-				console.log("currentBand", band);				
-				console.log("bandLeader", band.band_leader);				
-				this.setState({
-					currentBand: band,
-					memberList: band.band_memberships
-				});
-			})
-	}
 
 	sortMembers = () => {
 		// sort with empty slots at the end. (musician === undefined) = true when slot is open
@@ -118,13 +127,13 @@ class BandShow extends React.Component {
 
 	enableModal = () => {
 		this.setState({
-			bandModal: true,
+			showBandFormModal: true,
 		})
 	}
 
 	disableModal = () => {
 		this.setState({
-			bandModal: false
+			showBandFormModal: false
 		})
 	}
 
@@ -136,7 +145,7 @@ class BandShow extends React.Component {
             { this.state.currentBand ?
             	<React.Fragment>
 		            { 
-		            	this.state.currentBand.band_leader.id === this.state.sessionUser 
+		            	this.state.currentBand.band_leader.id === this.props.currentUser.id 
 		            		? <Button 
 		            			floated="right"
 		            			onClick={ () => this.enableModal() }
@@ -159,17 +168,19 @@ class BandShow extends React.Component {
 		                            <p>Genre: {this.state.currentBand.genre}</p>
 		                            <p>{this.state.currentBand.bio}</p>
 		                            <BandModal 
-		                            	formMethod="PATCH"
-		                            	formData={ this.state.currentBand }
-		                            	visible={ this.state.bandModal }
+		                            	processEditBandForm={ this.props.processEditBandForm }
+		                            	currentUser={ this.props.currentUser }
+		                            	showBandFormModal={ this.state.showBandFormModal }
 		                            	disableModal={ this.disableModal }
+		                            	formData={ this.state.currentBand }
+
 		                            	afterFormSubmit={ (band) => this.setState({ currentBand: (band)}) }/>
 		                        </Segment>
 		                    </Grid.Column>
 		                </Grid.Row>
 		            </Grid>
 				    <Divider />
-		            { this.state.currentBand.band_leader.id === this.state.sessionUser 
+		            { this.state.currentBand.band_leader.id === this.props.currentUser 
 		            	? <Button size="large" floated="right">Add Slot</Button> 
 		            	: null}
 		            <Header as="h1">Lineup:</Header>
@@ -195,7 +206,7 @@ class BandShow extends React.Component {
 									</Card.Content>
 									<Card.Content extra>
 										{/* band leader admin actions*/}
-										{ this.state.currentBand.band_leader.id === this.state.sessionUser 
+										{ this.state.currentBand.band_leader.id === this.props.currentUser 
 
 											/* if the slot is filled, and the member is not the band leader
 											// add drop musician button */
@@ -231,7 +242,8 @@ class BandShow extends React.Component {
 	                	})}
 	                </Card.Group>
                 </React.Fragment>
-                : <PageNotFound /> }
+                : `${ this.state.loading ? `Sorry, we're a little slow processing all of this awesomeness...` : <PageNotFound /> }`
+            }
             </React.Fragment>
 
 

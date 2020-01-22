@@ -10,6 +10,7 @@ const currentYear = (new Date().getFullYear())
 class BandModal extends React.Component {
 	state={
 		modal_quote: MUSIC_QUOTES[Math.floor(Math.random() * MUSIC_QUOTES.length)],
+		isNewBand: true,
 		form_name: '',
     	form_region: '',
     	form_bio: '',
@@ -21,10 +22,7 @@ class BandModal extends React.Component {
 	}
 	
 	componentDidMount() {
-		// needs props of 
-		// visible: boolean
-		// disableModal: callback
-		// formData: {[BAND]object} // is current band for controlledForm
+		// HANDLES musician_id FOR BOTH CREATE AND EDIT ACTIONS
 		if (this.props.formData) {
 			// console.log("formData", this.props.formData)
 			this.setState({
@@ -35,7 +33,8 @@ class BandModal extends React.Component {
 		    	form_genre: this.props.formData.genre,
 		    	form_logo: this.props.formData.logo,
 		    	form_musician_id: this.props.formData.musician_id,
-		    	form_valid: false
+		    	form_valid: false,
+		    	isNewBand: false
 			})
 		} else {
 			if (this.props.currentUser) {
@@ -50,51 +49,52 @@ class BandModal extends React.Component {
 		})
 	}
 
-	bandFormSubmit = (method="GET") => {
-		console.log("submitting form", method, this.props.formData)
-		let band_id = method === "PATCH" ? this.props.formData.id : null
+	// handleFormSubmit = () => {
+	// 	if (this.props.isNewBand)  ? this.handleNewBandFormSubmit : this.handleEditBandFormSubmit
+	// 	}
+	// }
 
-		const bandConfig = {
-			method: `${method}`,
-			headers: {
-				'Content-Type': 'application/json',
-				'Accepts': 'application/json'
-			},
-			body: JSON.stringify({
-				name: this.state.form_name,
-			    bio: this.state.form_bio,
-			    established: this.state.form_established,
-			    region: this.state.form_region,
-			    genre: this.state.form_genre,
-			    logo: this.state.form_logo,
-			    musician_id: this.state.form_musician_id
-			})
+	handleNewBandFormSubmit = () => {
+
+		const fallbackLogo = 'https://www.alltop.com/viral/wp-content/uploads/2013/10/Fotolia_40337302_Subscription_XXL-500x353.jpg'
+
+		const newBandFormData = {
+			name: this.state.form_name,
+		    bio: this.state.form_bio,
+		    established: this.state.form_established,
+		    region: this.state.form_region,
+		    genre: this.state.form_genre,
+		    logo: this.state.form_logo !== '' ? this.state.form_logo : fallbackLogo,
+		    musician_id: this.state.form_musician_id
 		}
+		this.props.processNewBandForm(newBandFormData)
+		console.log(newBandFormData)
+		this.props.disableModal()
+	}
 
-		const suffix = band_id ? `/${band_id}` : ''
+	handleEditBandFormSubmit = () => {
+		const fallbackLogo = 'https://www.alltop.com/viral/wp-content/uploads/2013/10/Fotolia_40337302_Subscription_XXL-500x353.jpg'
 
-		fetch(`${BANDS_URL}${suffix}`, bandConfig)
-			.then(response => {
-				if (response.ok) {
-					return response.json()
-				}
-			})
-			.then(band => {
-				console.log(band)
-				this.props.afterFormSubmit(band)
-				this.props.disableModal()
-				// return <Redirect to={`/bands/${band.id}`} />
-			})
-			.catch(error => console.log(error.message))
-
+		const editBandFormData = {
+			name: this.state.form_name,
+		    bio: this.state.form_bio,
+		    established: this.state.form_established,
+		    region: this.state.form_region,
+		    genre: this.state.form_genre,
+		    logo: this.state.form_logo !== '' ? this.state.form_logo : fallbackLogo,
+		    musician_id: this.state.form_musician_id
+		}
+		this.props.processEditBandForm(editBandFormData)
+		console.log(editBandFormData)
+		this.props.disableModal()
 	}
 
 	render(){
 		return(
 			<Modal 
-				open={ this.props.visible }
-				closeOnEscape={true}
-	            closeOnDimmerClick={true}
+				open={ this.props.showBandFormModal }
+				closeOnEscape={ true }
+	            closeOnDimmerClick={ true }
 	            onClose={ () => this.props.disableModal() }
 			 >
 			    <Modal.Header>"{ this.state.modal_quote.quote }"
@@ -106,7 +106,7 @@ class BandModal extends React.Component {
 			        <Header>Band Details</Header>
 			      	<Form 
 			      		onChange={ (event) => this.handleBandFormChanges(event) }
-			      		onSubmit={ () => this.bandFormSubmit(this.props.formMethod) }
+			      		onSubmit={ this.props.isNewBand ? this.handleNewBandFormSubmit : this.handleEditBandFormSubmit }
 		      		>
 				        <Form.Group widths='equal'>
 				          <Form.Input fluid name="form_name" label='Band Name' placeholder='Delorean Ipsum'  value={ this.state.form_name }/>

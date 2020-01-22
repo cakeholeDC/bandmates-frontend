@@ -26,9 +26,12 @@ class MainContainer extends React.Component {
 							
 							<Route path='/bands/:id' exact render={ (routerProps) =>
 								<BandShow 
-									{...routerProps} 
+									{...routerProps}
+									processEditBandForm={ this.props.processEditBandForm } 
 									allBands={this.props.bands} 
 									currentUser={this.props.currentUser}
+									//not using yet.....
+									currentBand={this.props.currentBand}
 								/> 
 							} />
 							
@@ -36,7 +39,7 @@ class MainContainer extends React.Component {
 								<BandContainer 
 									{...routerProps}
 									bands={this.props.bands}
-									pushBand={this.pushBand} 
+									processNewBandForm={ this.props.processNewBandForm }
 									currentUser={this.props.currentUser}
 								/>
 							} />
@@ -63,6 +66,7 @@ class MainContainer extends React.Component {
 										{...routerProps}
 										bands={this.props.bands}
 										currentUser={this.props.currentUser}
+										processNewBandForm={ this.props.processNewBandForm }
 									/>
 									<Divider />
 									<MusicianContainer 

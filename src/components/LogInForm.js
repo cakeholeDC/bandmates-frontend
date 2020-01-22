@@ -29,11 +29,12 @@ class LogInForm extends React.Component {
 
 	processUserForm = (event) => {
 		event.preventDefault()
-		console.log('processing user form')
-		let BODY
+		console.log('LoginForm.js => processUserForm(event)', "event=>", event)
+
+		let userFormData
 		if (this.state.newAccount){
 			//process new user
-			 BODY = {
+			 userFormData = {
 				username: this.state.username,
 				password: this.state.password,
 				name: this.state.name,
@@ -43,13 +44,13 @@ class LogInForm extends React.Component {
 				img: this.state.img,
 				bio: this.state.bio
 			}
-			this.props.processNewUserForm(BODY)
+			this.props.processNewUserForm(userFormData)
 		} else {
-			 BODY = {
+			 userFormData = {
 				username: this.state.username,
 				password: this.state.password
 			}
-			this.props.processLoginForm(BODY)
+			this.props.processLoginForm(userFormData)
 		}
 		this.props.disableLogInForm()
 	}
@@ -138,9 +139,13 @@ class LogInForm extends React.Component {
 								<Button type="submit" floated="left" onClick={ () => this.setState({ newAccount: !this.state.newAccount }) } negative >Cancel</Button>
 							</React.Fragment>
 							: <Button.Group floated="right">
-							    <Button onClick={() => this.setState({ newAccount: !this.state.newAccount }) }>Create an Account</Button>
+							    <Button type="submit" onClick={ this.processUserForm } primary >
+							    	<span role="img" aria-label="rock-and-roll-horns">🤘🏼</span>
+							    		Let's Rock!
+						    		<span role="img" aria-label="rock-and-roll-horns"> 🤘🏼</span>
+							    </Button>
 							    <Button.Or />
-							    <Button type="submit" onClick={ this.processUserForm } primary >Log In</Button>
+							    <Button onClick={() => this.setState({ newAccount: !this.state.newAccount }) }>Sign up</Button>
 						    </Button.Group>
 						}
 						

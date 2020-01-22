@@ -6,7 +6,7 @@ const currentYear = (new Date().getFullYear())
 
 class NewBandCard extends React.Component {
 	state={
-		modal: false,
+		showBandFormModal: false,
 	}
 
 	// depreciated in favor of separate functions to prevent endless toggling on click
@@ -18,19 +18,19 @@ class NewBandCard extends React.Component {
 
 	enableModal = () => {
 		this.setState({
-			modal: true,
+			showBandFormModal: true,
 		})
 	}
 
 	disableModal = () => {
 		this.setState({
-			modal: false
+			showBandFormModal: false
 		})
 	}
 
 	render(){
 		return(
-			<Card color="green" onClick={() => this.enableModal() }>
+			<Card color="green" onClick={() => this.enableModal() } >
 				<Image src='https://snworksceo.imgix.net/dpn-34s/83398a6b-f1b7-4b51-8ee0-b42d16f28a10.sized-1000x1000.jpg?w=1000' alt="start-a-band" wrapped ui={false} />
 			    <Card.Content>
 			      <Card.Header>Start a Band</Card.Header>
@@ -38,10 +38,11 @@ class NewBandCard extends React.Component {
 			      <Card.Description>
 			      	<p>Smalltown, USA</p>
 					<BandModal
+						processNewBandForm={ this.props.processNewBandForm }
 						currentUser={this.props.currentUser}
-						visible={ this.state.modal }
+						showBandFormModal={ this.state.showBandFormModal }
 						disableModal={ this.disableModal }
-						formMethod="POST"
+						
 						afterFormSubmit={ (band) => this.props.pushBand(band) }/>
 				  </Card.Description>
 			    </Card.Content>

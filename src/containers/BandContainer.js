@@ -31,7 +31,6 @@ class BandContainer extends React.Component {
 	}
 
 	render(){
-		console.log(this.state.modal)
 
 		return (
 			<React.Fragment>
@@ -55,7 +54,11 @@ class BandContainer extends React.Component {
 			
 				<Card.Group itemsPerRow={4}>
 						{ this.props.match.url === '/bands' ? 
-							<NewBandCard pushBand={this.props.pushBand} currentUser={this.props.currentUser}/> 
+							<NewBandCard 
+								pushBand={this.props.pushBand} 
+								currentUser={this.props.currentUser}
+								processNewBandForm={ this.props.processNewBandForm }
+							/> 
 						: null }
 						{ this.orderedBands().map(band => <BandCard {...band} key={band.id}/>) }
 				</Card.Group>
