@@ -29,11 +29,8 @@ class LogInForm extends React.Component {
 
 	processUserForm = (event) => {
 		event.preventDefault()
-		console.log('LoginForm.js => processUserForm(event)', "event=>", event)
-
 		let userFormData
 		if (this.state.newAccount){
-			//process new user
 			 userFormData = {
 				username: this.state.username,
 				password: this.state.password,
