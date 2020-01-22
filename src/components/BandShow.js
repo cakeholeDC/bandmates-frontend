@@ -27,26 +27,9 @@ class BandShow extends React.Component {
 	}
 
 	componentDidMount(){
-		//set current band by fetching => performs better when sent directly to the band page.
-		// const id = this.props.match.params.id
-
-		// fetch(`${BANDS_URL}/${id}`)
-		// 	.then(res => {
-		// 		if (res.ok) {
-		// 			return res.json()
-		// 		}
-		// 	})
-		// 	.then(band => {
-		// 		console.log("currentBand", band);				
-		// 		console.log("bandLeader", band.band_leader);				
-		// 		console.log("members", band.band_memberships);				
-		// 		this.setState({
-		// 			currentBand: band,
-		// 			memberList: band.band_memberships,
-		// 			loading: false
-		// 		});
-		// 		this.props.setCurrentBand(band)
-		// 	})
+		this.setState({
+			loading: false
+		})
 	}
 
 
@@ -232,7 +215,7 @@ class BandShow extends React.Component {
 	                	})}
 	                </Card.Group>
                 </React.Fragment>
-                : `${ this.state.loading ? `Sorry, we're a little slow processing all of this awesomeness...` : <PageNotFound /> }`
+                : <PageNotFound />
             }
             </React.Fragment>
 

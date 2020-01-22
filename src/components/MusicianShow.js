@@ -1,6 +1,8 @@
 import React from 'react'
 import { Grid, Segment, Image, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import PageNotFound from './PageNotFound'
+
 
 const currentYear = (new Date().getFullYear())
 const MUSICIANS_URL = 'http://localhost:3000/musicians'
@@ -47,7 +49,10 @@ class MusicianShow extends React.Component {
                                 <Header as='h1'>Stage Name: {this.state.currentMusician.username}</Header>
                             </Segment>
                                 { this.props.currentUser && this.props.currentUser.id === this.state.currentMusician.id 
-                                    ? <Button negative>Delete Profile</Button>
+                                    ? <React.Fragment>
+                                        <Button id="edit-profile-btn" primary>Edit Profile</Button>
+                                        <Button negative>Delete Profile</Button>
+                                    </React.Fragment>
                                     : null}
 
                             <Segment>
@@ -89,7 +94,7 @@ class MusicianShow extends React.Component {
                         </Grid.Column>
                     </Grid.Row> 
                 </Grid> 
-                : null }
+                : <PageNotFound /> }
             </React.Fragment>
         )
     }
