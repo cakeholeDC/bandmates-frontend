@@ -219,9 +219,12 @@ class App extends React.Component {
 				"Accept" : "application/json"
 			}
 		})
-		.then(this.setState({
-			musicians: [...this.state.musicians.filter( deletedMusician => deletedMusician.id !== id)]
-		}))
+		.then(() => {
+			this.logOutUser()
+			this.setState({
+				musicians: [...this.state.musicians.filter( deletedMusician => deletedMusician.id !== id)]
+			})
+		})
     }
 
 	processDeleteBand = (data) => {

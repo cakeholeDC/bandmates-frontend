@@ -25,15 +25,16 @@ class MusicianShow extends React.Component {
                         <Grid.Column>
                             <Segment>
                                 <Image src={this.props.currentMusician.img} alt={this.props.currentMusician.name} />
+                                <Header as='h1'>Stage Name: {this.props.currentMusician.username}</Header>
                             </Segment>
                             { this.props.currentUser && this.props.currentUser.id === this.props.currentMusician.id 
                                 ? <React.Fragment>
+                                    <Button id="edit-profile-btn" positive>Edit Profile</Button>
                                     <Button 
                                         negative
                                         onClick={ () => this.props.deleteMusician(this.props.currentUser.id)}    
                                         >Delete Profile
                                     </Button>
-                                    <Button positive>Edit Profile</Button>
                                     </React.Fragment>
                                 : null
                             }
@@ -59,11 +60,7 @@ class MusicianShow extends React.Component {
 
                         <Grid.Column>
                             <Segment>
-                                <Header as='h1'>{this.props.currentMusician.username}</Header>
-                                <p>{this.props.currentMusician.name}</p>
-
                                 <Header as='h1'>{this.props.currentMusician.name}</Header>
-
                                 
                                 <ul className="unstyled-list"><h3>Instruments</h3>
                                     {this.props.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
