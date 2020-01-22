@@ -5,13 +5,7 @@ import BandModal from './BandModal'
 import NewMemberForm from './NewMemberForm'
 import PageNotFound from './PageNotFound'
 
-
-// const currentYear = (new Date().getFullYear())
 const MEMBERS_URL = 'http://localhost:3000/band_memberships'
-// const BANDS_URL = 'http://localhost:3000/bands'
-
-
-
 
 class BandShow extends React.Component {
 	constructor(props){
@@ -25,30 +19,6 @@ class BandShow extends React.Component {
 			memberModal: false
 		}
 	}
-
-	componentDidMount(){
-		//set current band by fetching => performs better when sent directly to the band page.
-		// const id = this.props.match.params.id
-
-		// fetch(`${BANDS_URL}/${id}`)
-		// 	.then(res => {
-		// 		if (res.ok) {
-		// 			return res.json()
-		// 		}
-		// 	})
-		// 	.then(band => {
-		// 		console.log("currentBand", band);				
-		// 		console.log("bandLeader", band.band_leader);				
-		// 		console.log("members", band.band_memberships);				
-		// 		this.setState({
-		// 			currentBand: band,
-		// 			memberList: band.band_memberships,
-		// 			loading: false
-		// 		});
-		// 		this.props.setCurrentBand(band)
-		// 	})
-	}
-
 
 	handleDropMemberClick = (member) => {
 		const memberConfig = {
@@ -87,12 +57,6 @@ class BandShow extends React.Component {
 
 
 	sortMembers = () => {
-		// sort with empty slots at the end. (musician === undefined) = true when slot is open
-		// return this.state.memberList.sort((a,b) => (a.musician !== undefined) < (b.musician !== undefined ) ? 1 : -1 )
-
-		//OR
-
-		// sort by instrument
 		return this.props.currentBand.band_memberships.sort((a,b) => (a.instrument.name > b.instrument.name) ? 1 : -1 )
 	}
 
@@ -110,7 +74,6 @@ class BandShow extends React.Component {
 
   
     render() {
-    	// let { logo, name, established, region, bio, band_leader } = this.props.currentBand
         return (
             <React.Fragment>
             { this.props.currentBand ?

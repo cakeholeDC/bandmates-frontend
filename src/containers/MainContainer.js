@@ -48,6 +48,8 @@ class MainContainer extends React.Component {
 									{...routerProps}
 									allMusicians={this.props.musicians} 
 									currentUser={this.props.currentUser}
+									currentMusician={ this.props.musicians.find( musician => musician.id === parseInt(routerProps.match.params.id, 10)) }
+									deleteMusician={this.props}
 								/>
 							} />
 							

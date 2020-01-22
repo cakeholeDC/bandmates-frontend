@@ -211,6 +211,19 @@ class App extends React.Component {
 
 	}
 
+	deleteMusician = (id) => {
+		fetch(`http://localhost:3000/musicians/${id}`, {
+			method: "DELETE",
+			headers: {
+				'Content-Type': "application/json",
+				"Accept" : "application/json"
+			}
+		})
+		.then(this.setState({
+			musicians: [...this.state.musicians.filter( deletedMusician => deletedMusician.id !== id)]
+		}))
+    }
+
 	processDeleteBand = (data) => {
 		let okToDelete = window.confirm("Easy there, Yoko. Are you sure you want to do that?")
 
@@ -220,7 +233,7 @@ class App extends React.Component {
 				method: "DELETE",
 				headers: {
 					'Content-Type': "application/json",
-					"Accepts" : "application/json"
+					"Accept" : "application/json"
 				}
 			})
 			.then( this.setState({ 
@@ -247,7 +260,8 @@ class App extends React.Component {
 		    processEditBandForm={ this.processEditBandForm }
 		    processDeleteBand={ this.processDeleteBand }
 		    processNewMemberForm={ this.processNewMemberForm }
-		    musicians={ this.state.musicians }
+			musicians={ this.state.musicians }
+			deleteMusician={this.deleteMusician}
 	      	isLoading={ this.state.loading }
 	      	currentUser={ this.state.currentUser }
 	      	setCurrentBand={ this.setCurrentBand }

@@ -1,58 +1,46 @@
 import React from 'react'
 import { Grid, Segment, Image, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import PageNotFound from './PageNotFound'
 
 const currentYear = (new Date().getFullYear())
-const MUSICIANS_URL = 'http://localhost:3000/musicians'
-
-
-
 
 class MusicianShow extends React.Component {
     state={
-        currentMusician: null
+        currentMusician: null,
+        loading: true
     }
 
-    componentDidMount(){
-
-        fetch(`${MUSICIANS_URL}/${this.props.match.params.id}`)
-            .then(res => {
-                if (res.ok) {
-                    return res.json()
-                }
-            })
-            .then(musician => {
-                this.setState({
-                    currentMusician: musician
-                });
-            })
+    componentDidMount() {
+        this.setState({ loading: !this.state.loading})
     }
-    
+
     render() {
-
-        // let currentMusician
-        // if (this.props.allMusicians.length >  0) {
-        //     currentMusician = this.props.allMusicians.find( musician => musician.id === parseInt(this.props.match.params.id, 10))
-        // } else { 
-        //     currentMusician = null
-        // }
         return (
             <React.Fragment>
-            { this.state.currentMusician ?
+            { this.props.currentMusician ?
                 <Grid columns={2} divided>
                     <Grid.Row stretched>
                         <Grid.Column>
                             <Segment>
-                                <Image src={this.state.currentMusician.img} alt={this.state.currentMusician.name} />
+                                <Image src={this.props.currentMusician.img} alt={this.props.currentMusician.name} />
                             </Segment>
+                            { this.props.currentUser && this.props.currentUser.id === this.props.currentMusician.id 
+                                    ? <React.Fragment>
+                                        <Button 
+                                            negative
+                                            onClick={ () => this.props.deleteMusician(this.props.currentUser.id)}    
+                                            >Delete Profile
+                                        </Button>
+                                        <Button positive>Edit Profile</Button>
+                                        </React.Fragment>
+                                    : null}
 
                             <Segment>
-                                <p>Age: {currentYear - (new Date(this.state.currentMusician.birthdate).getFullYear() ) }</p>
-                                <p>Playing Since: {this.state.currentMusician.playing_since}</p>
-                                <p>Region: {this.state.currentMusician.region}</p>
-                                { this.props.currentUser && this.props.currentUser.id === this.state.currentMusician.id 
-                                    ? <Button negative>Delete Profile</Button>
-                                    : null}
+                                <p>Age: {currentYear - (new Date(this.props.currentMusician.birthdate).getFullYear() ) }</p>
+                                <p>Playing Since: {this.props.currentMusician.playing_since}</p>
+                                <p>Region: {this.props.currentMusician.region}</p>
+                          
                             </Segment>
                             <Segment>
                                 <p>Demos:</p>
@@ -69,26 +57,26 @@ class MusicianShow extends React.Component {
 
                         <Grid.Column>
                             <Segment>
-                                <Header as='h1'>{this.state.currentMusician.username}</Header>
-                                <p>{this.state.currentMusician.name}</p>
+                                <Header as='h1'>{this.props.currentMusician.username}</Header>
+                                <p>{this.props.currentMusician.name}</p>
                                 
                                 <ul className="unstyled-list"><h3>Instruments</h3>
-                                    {this.state.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
+                                    {this.props.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Associated Bands</h3>
-                                    {this.state.currentMusician.associated_bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
+                                    {this.props.currentMusician.associated_bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Managed Bands</h3>
-                                    {this.state.currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
+                                    {this.props.currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
                                 </ul>
                                 <hr/>
-                                <Header as="h4">About {this.state.currentMusician.name}:</Header>
-                                <p>{this.state.currentMusician.bio}</p>
+                                <Header as="h4">About {this.props.currentMusician.name}:</Header>
+                                <p>{this.props.currentMusician.bio}</p>
                             </Segment>
                         </Grid.Column>
                     </Grid.Row> 
                 </Grid> 
-                : null }
+                : null}
             </React.Fragment>
         )
     }
