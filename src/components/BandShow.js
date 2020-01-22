@@ -8,7 +8,7 @@ import PageNotFound from './PageNotFound'
 
 // const currentYear = (new Date().getFullYear())
 const MEMBERS_URL = 'http://localhost:3000/band_memberships'
-const BANDS_URL = 'http://localhost:3000/bands'
+// const BANDS_URL = 'http://localhost:3000/bands'
 
 
 

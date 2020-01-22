@@ -1,5 +1,5 @@
 import React from 'react'
-import { Search, Input } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 
 class BandSearchBar extends React.Component {
     
@@ -11,7 +11,7 @@ class BandSearchBar extends React.Component {
                     icon="search"
                     placeholder="Search..."
                     onChange={ this.props.onChange }
-                    bandSearchTerm={this.props.bandSearchTerm}
+                    searchTerm={this.props.searchTerm}
                 />
             </React.Fragment>
         )
