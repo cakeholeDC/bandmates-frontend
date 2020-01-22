@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Segment, Image, Header, Card, Icon, Button, Divider } from 'semantic-ui-react'
+import { Grid, Segment, Image, Header, Card, Button, Divider } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import BandModal from './BandModal'
 import NewMemberForm from './NewMemberForm'

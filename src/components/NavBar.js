@@ -24,7 +24,7 @@ class NavBar extends Component {
 			<React.Fragment>
 		    	<Menu>
 			        <NavLink to='/' exact>
-						<Menu.Item name='logo'>App Logo</Menu.Item>
+						<Menu.Item name='logo'>Bandmates</Menu.Item>
 					</NavLink>
 
 					<NavLink to='/bands' exact>

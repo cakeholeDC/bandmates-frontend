@@ -9,26 +9,31 @@ class BandContainer extends React.Component {
 		super()
 		this.state = {
 			scrollStart: 0,
-			displayedBands: 4,
-			currentBands: [],
 		}
 	}
-
-	scrollBands = (event) => {
-		const adjustment = (event.target.name === "next" ? 0 : -8)
-		const start = this.state.scrollStart + adjustment
-		const end = start + this.state.displayedBands
-		console.log('scrollBands', start, end)
-		console.log(this.props.bands)
-		this.setState({
-			currentBands: [...this.orderedBands.slice(start, end)],
-			scrollStart: end
-		})
-	}
-
+	
 	orderedBands = () => {
 		return this.props.bands.sort((a,b) => (a.name > b.name) ? 1 : -1)
 	}
+
+	slicedBands = () => {
+		return [...this.orderedBands().slice(this.state.scrollStart, this.state.scrollStart + 4)]
+	}
+
+	scrollBands = (event) => {
+		console.log(event.target.name)
+
+		const adjust = event.target.name === "next" ? 4 : -4
+		console.log("adjust", adjust)
+
+		const scrollStart = this.state.scrollStart + adjust < this.props.bands.length && this.state.scrollStart + adjust > 0 ? (this.state.scrollStart + adjust) : 0
+		console.log(scrollStart)
+
+		this.setState({
+			scrollStart: scrollStart,
+		})
+	}
+
 
 	render(){
 
@@ -38,16 +43,20 @@ class BandContainer extends React.Component {
 				{this.props.match.url === '/' ?
 				<React.Fragment>
 					<Button 
+						secondary
+						circular
 						floated="left" 
 						name="previous" 
 						onClick={ this.scrollBands }
-						>Previous
+						><i className="arrow left icon"></i>
 					</Button>
 					<Button 
+						secondary
+						circular
 						floated="right" 
 						name="next" 
 						onClick={ this.scrollBands }
-						>Next
+						><i className="arrow right icon"></i>
 					</Button> 	
 				</React.Fragment>
 				: null }
@@ -60,7 +69,10 @@ class BandContainer extends React.Component {
 								processNewBandForm={ this.props.processNewBandForm }
 							/> 
 						: null }
-						{ this.orderedBands().map(band => <BandCard {...band} key={band.id}/>) }
+						{ this.props.match.url === '/' 
+							? this.slicedBands().map(band => <BandCard {...band} key={band.id}/>)
+							: this.orderedBands().map(band => <BandCard {...band} key={band.id}/>)
+						}
 				</Card.Group>
 			</React.Fragment>
 		)

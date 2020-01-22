@@ -4,7 +4,7 @@ import { Modal, Image, Header, Form, Button } from 'semantic-ui-react'
 // import { Redirect } from 'react-router-dom'
 
 
-const BANDS_URL = 'http://localhost:3000/bands'
+// const BANDS_URL = 'http://localhost:3000/bands'
 const currentYear = (new Date().getFullYear())
 
 class BandModal extends React.Component {

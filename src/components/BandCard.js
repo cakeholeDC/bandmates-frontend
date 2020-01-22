@@ -4,10 +4,17 @@ import { withRouter } from 'react-router'
 
 class BandCard extends React.Component {
 
-	render(){
-		let { logo, name, established, region, band_memberships } = this.props
+	getBandOpenings = () => {
+		const openings = this.props.band_memberships.filter(lineup => !lineup.musician).length
+		if (openings > 0) {
+			return `${openings} current opening${openings > 1 ? "s" : ''}!`
+		} else {
+			return ""
+		}
+	}
 
-		// logo = 'https://picsum.photos/700'
+	render(){
+		let { logo, name, established, region } = this.props
 		
 		return(
 		  <Card
@@ -16,7 +23,7 @@ class BandCard extends React.Component {
 		    header={ name }
 		    meta={`Est. ${ established }`}
 		    description={ region }
-		    extra={`${band_memberships.filter(lineup => !lineup.musician)} current openings!`}
+		    extra={ this.getBandOpenings() }
 		  />
 		)
 	}
