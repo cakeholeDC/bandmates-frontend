@@ -78,17 +78,6 @@ class BandShow extends React.Component {
             <React.Fragment>
             { this.props.currentBand ?
             	<React.Fragment>
-		            { 
-		            	this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
-		            		? <Button 
-		            			secondary
-		            			floated="right"
-		            			onClick={ () => this.enableModal() }
-	            			  >
-	            				Edit Band
-            				</Button> 
-		            		: null
-	            	}
 		            <Header as="h1">{this.props.currentBand.name}</Header>
 		        	<Grid columns={2} divided>
 		                <Grid.Row stretched>
@@ -96,6 +85,24 @@ class BandShow extends React.Component {
 		                        <Segment>
 		                            <Image  wrapped size='medium' src={this.props.currentBand.logo} alt={this.props.currentBand.name} />
 		                        </Segment>
+					            { 
+					            	this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
+					            		? <Button 
+					            			id="edit-band-btn"
+					            			negative
+					            			onClick={ () => this.enableModal() }
+				            			  >
+				            				Edit Band
+			            				</Button> 
+					            		: null
+				            	}
+				            	{ this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
+					            	? <NewMemberForm 
+					            		currentBand={ this.props.currentBand }
+					            		processNewMemberForm={ this.props.processNewMemberForm }
+					            		/> 
+					            	: null
+					            }
 		                    </Grid.Column>
 		                    <Grid.Column>
 		                        <Segment textAlign='left'>
@@ -120,12 +127,7 @@ class BandShow extends React.Component {
 		                </Grid.Row>
 		            </Grid>
 				    <Divider />
-		            { this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
-		            	? <NewMemberForm 
-		            		currentBand={ this.props.currentBand }
-		            		processNewMemberForm={ this.props.processNewMemberForm }
-		            		/> 
-		            	: null}
+		            
 		            <Header as="h1">Lineup:</Header>
 				    <Divider />
 	                <Card.Group itemsPerRow={3} stackable>
@@ -138,11 +140,14 @@ class BandShow extends React.Component {
 	                				</Card.Content>
 	                				<Image wrapped ui={false} src={member.musician ? member.musician.img : 'http://ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png' } />
 									<Card.Content>
-										<Card.Header as='h1'>{ member.musician ? member.musician.name : "This could be YOU!"}</Card.Header>
+										<Card.Header as='h1'>{ member.musician ? member.musician.username : "This could be YOU!"}</Card.Header>
 										<Card.Meta >{ member.musician ? member.musician.region : null }</Card.Meta>
 										<Card.Description>
 											{ member.musician 
-												? <p>Playing Since: {member.musician.playing_since}</p>
+												? <React.Fragment>
+													<p>Real Name: {member.musician.name}</p>
+													<p>Playing Since: {member.musician.playing_since}</p>
+												</React.Fragment>
 												: null 
 											}
 										</Card.Description>
@@ -167,7 +172,7 @@ class BandShow extends React.Component {
 										{ 
 											!member.musician
 												? <Button 
-													secondary 
+													positive 
 													onClick={() => this.props.handleOnJoinBand(member)}
 													>
 													Join Band

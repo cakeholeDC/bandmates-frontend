@@ -53,12 +53,16 @@ class MusicianShow extends React.Component {
                                     allow="autoplay" 
                                     src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/942118192&color=%232165a6&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                             </Segment>
+                            
                         </Grid.Column>
 
                         <Grid.Column>
                             <Segment>
                                 <Header as='h1'>{this.props.currentMusician.username}</Header>
                                 <p>{this.props.currentMusician.name}</p>
+
+                                <Header as='h1'>{this.state.currentMusician.name}</Header>
+
                                 
                                 <ul className="unstyled-list"><h3>Instruments</h3>
                                     {this.props.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
@@ -72,6 +76,17 @@ class MusicianShow extends React.Component {
                                 <hr/>
                                 <Header as="h4">About {this.props.currentMusician.name}:</Header>
                                 <p>{this.props.currentMusician.bio}</p>
+                            </Segment>
+                            <Segment>
+                                <p>Demos:</p>
+                                <iframe 
+                                    title="artist-demos"
+                                    width="100%" 
+                                    height="300" 
+                                    scrolling="no" 
+                                    frameBorder="no" 
+                                    allow="autoplay" 
+                                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/942118192&color=%232165a6&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                             </Segment>
                         </Grid.Column>
                     </Grid.Row> 
