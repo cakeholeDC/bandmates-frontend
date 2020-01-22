@@ -62,7 +62,7 @@ class MusicianShow extends React.Component {
                                 <Header as='h1'>{this.props.currentMusician.username}</Header>
                                 <p>{this.props.currentMusician.name}</p>
 
-                                <Header as='h1'>{this.state.currentMusician.name}</Header>
+                                <Header as='h1'>{this.props.currentMusician.name}</Header>
 
                                 
                                 <ul className="unstyled-list"><h3>Instruments</h3>
