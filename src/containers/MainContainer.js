@@ -18,16 +18,19 @@ class MainContainer extends React.Component {
 						<Switch>
 							
 							<Route path='/bands/:id' exact render={ (routerProps) =>
+
 								<BandShow 
 									{...routerProps}
 									processEditBandForm={ this.props.processEditBandForm } 
 									processDeleteBand={ this.props.processDeleteBand }
 									allBands={this.props.bands} 
 									currentUser={this.props.currentUser}
-									currentBand={this.props.currentBand}
+									currentBand={ this.props.bands.find( band => band.id === parseInt(routerProps.match.params.id, 10)) }
 									setCurrentBand={ this.props.setCurrentBand }
 									processNewMemberForm={ this.props.processNewMemberForm }
 									processNewBandForm={ this.props.processNewBandForm }
+									handleOnJoinBand={ this.props.handleOnJoinBand }
+									handleLeaveBand={ this.props.handleLeaveBand }
 									//not using yet.....
 								/> 
 							} />

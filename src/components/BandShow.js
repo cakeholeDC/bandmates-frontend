@@ -14,46 +14,41 @@ const BANDS_URL = 'http://localhost:3000/bands'
 
 
 class BandShow extends React.Component {
-	state={
-		loading: true,
-		memberList: [],
-		currentBand: null,
-		showBandFormModal: false,
-		memberModal: false
+	constructor(props){
+		super(props)
+		console.log(this.props)
+		this.state={
+			loading: true,
+			memberList: [],
+			currentBand: this.props.currentBand,
+			showBandFormModal: false,
+			memberModal: false
+		}
 	}
 
 	componentDidMount(){
-		// set current band by filtering the list
-		// const currentBand = this.props.allBands.find( band => band.id === parseInt(this.props.match.params.id, 10))
-		// console.log("currentBand = ", currentBand)
-
 		//set current band by fetching => performs better when sent directly to the band page.
-		const id = this.props.match.params.id
+		// const id = this.props.match.params.id
 
-		fetch(`${BANDS_URL}/${id}`)
-			.then(res => {
-				if (res.ok) {
-					return res.json()
-				}
-			})
-			.then(band => {
-				console.log("currentBand", band);				
-				console.log("bandLeader", band.band_leader);				
-				console.log("members", band.band_memberships);				
-				this.setState({
-					currentBand: band,
-					memberList: band.band_memberships,
-					loading: false
-				});
-				this.props.setCurrentBand(band)
-			})
+		// fetch(`${BANDS_URL}/${id}`)
+		// 	.then(res => {
+		// 		if (res.ok) {
+		// 			return res.json()
+		// 		}
+		// 	})
+		// 	.then(band => {
+		// 		console.log("currentBand", band);				
+		// 		console.log("bandLeader", band.band_leader);				
+		// 		console.log("members", band.band_memberships);				
+		// 		this.setState({
+		// 			currentBand: band,
+		// 			memberList: band.band_memberships,
+		// 			loading: false
+		// 		});
+		// 		this.props.setCurrentBand(band)
+		// 	})
 	}
 
-	// componentDidUpdate = () => {
-		// if (this.props.currentBand){
-		// 	this.setState({ currentBand: this.props.currentBand })
-		// }
-	// }
 
 	handleDropMemberClick = (member) => {
 		const memberConfig = {
@@ -81,34 +76,13 @@ class BandShow extends React.Component {
 			.catch(error => console.warn(error.message))
 	}
 
-	handleOnJoinBand = (member) => {
-		let musicianID = this.props.currentUser.id
-
-		const memberConfig = {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json",
-				"Accepts": "application/json"
-			},
-			body: JSON.stringify({
-				musician_id: musicianID
-			})
+	getBandOpenings = () => {
+		const openings = this.props.currentBand.band_memberships.filter(lineup => !lineup.musician).length
+		if (openings > 0) {
+			return `${openings} current opening${openings > 1 ? "s" : ''}!`
+		} else {
+			return ""
 		}
-
-		fetch(`${MEMBERS_URL}/${member.id}`, memberConfig)
-			.then(res => {
-				if (res.ok) {
-					return res.json()
-				}
-			})
-			.then(updatedBand => {
-				this.setState({
-						currentBand: updatedBand,
-						memberList: updatedBand.band_memberships
-				})
-			})
-			.catch(error => console.warn(error.message))
-
 	}
 
 
@@ -119,7 +93,7 @@ class BandShow extends React.Component {
 		//OR
 
 		// sort by instrument
-		return this.state.memberList.sort((a,b) => (a.instrument.name > b.instrument.name) ? 1 : -1 )
+		return this.props.currentBand.band_memberships.sort((a,b) => (a.instrument.name > b.instrument.name) ? 1 : -1 )
 	}
 
 	enableModal = () => {
@@ -136,13 +110,13 @@ class BandShow extends React.Component {
 
   
     render() {
-    	// let { logo, name, established, region, bio, band_leader } = this.state.currentBand
+    	// let { logo, name, established, region, bio, band_leader } = this.props.currentBand
         return (
             <React.Fragment>
-            { this.state.currentBand ?
+            { this.props.currentBand ?
             	<React.Fragment>
 		            { 
-		            	this.state.currentBand.band_leader.id === this.props.currentUser.id 
+		            	this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
 		            		? <Button 
 		            			secondary
 		            			floated="right"
@@ -152,19 +126,20 @@ class BandShow extends React.Component {
             				</Button> 
 		            		: null
 	            	}
-		            <Header as="h1">{this.state.currentBand.name}</Header>
+		            <Header as="h1">{this.props.currentBand.name}</Header>
 		        	<Grid columns={2} divided>
 		                <Grid.Row stretched>
 		                    <Grid.Column>
 		                        <Segment>
-		                            <Image  wrapped size='medium' src={this.state.currentBand.logo} alt={this.state.currentBand.name} />
+		                            <Image  wrapped size='medium' src={this.props.currentBand.logo} alt={this.props.currentBand.name} />
 		                        </Segment>
 		                    </Grid.Column>
 		                    <Grid.Column>
 		                        <Segment textAlign='left'>
-		                            <Header as="h3">{this.state.currentBand.name} was founded in {this.state.currentBand.established} in {this.state.currentBand.region} by {<Link to={`/musicians/${this.state.currentBand.band_leader.id}`}>{this.state.currentBand.band_leader.name}</Link>}</Header>
-		                            <p>Genre: {this.state.currentBand.genre}</p>
-		                            <p>{this.state.currentBand.bio}</p>
+		                            <Header as="h3">{this.props.currentBand.name} was founded in {this.props.currentBand.established} in {this.props.currentBand.region} by {<Link to={`/musicians/${this.props.currentBand.band_leader.id}`}>{this.props.currentBand.band_leader.name}</Link>}</Header>
+		                            <p>Genre: {this.props.currentBand.genre}</p>
+		                            <p>{this.props.currentBand.bio}</p>
+		                            <p><strong>{this.getBandOpenings()}</strong></p>
 		                            <BandModal 
 		                            	processEditBandForm={ this.props.processEditBandForm }
 		                            	processNewBandForm={ this.props.processNewBandForm }
@@ -174,7 +149,7 @@ class BandShow extends React.Component {
 		                            	showBandFormModal={ this.state.showBandFormModal }
 		                            	disableModal={ this.disableModal }
 		                            	isNewBand={ false }
-		                            	formData={ this.state.currentBand }
+		                            	formData={ this.props.currentBand }
 
 		                            	afterFormSubmit={ (band) => this.setState({ currentBand: (band)}) }/>
 		                        </Segment>
@@ -182,9 +157,9 @@ class BandShow extends React.Component {
 		                </Grid.Row>
 		            </Grid>
 				    <Divider />
-		            { this.state.currentBand.band_leader.id === this.props.currentUser.id 
+		            { this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
 		            	? <NewMemberForm 
-		            		currentBand={ this.state.currentBand }
+		            		currentBand={ this.props.currentBand }
 		            		processNewMemberForm={ this.props.processNewMemberForm }
 		            		/> 
 		            	: null}
@@ -211,11 +186,11 @@ class BandShow extends React.Component {
 									</Card.Content>
 									<Card.Content extra>
 										{/* band leader admin actions*/}
-										{ this.state.currentBand.band_leader.id === this.props.currentUser.id 
+										{ this.props.currentUser && this.props.currentBand.band_leader.id === this.props.currentUser.id 
 
 											/* if the slot is filled, and the member is not the band leader
 											// add drop musician button */
-											? member.musician && member.musician.id !== this.state.currentBand.band_leader.id 
+											? member.musician && member.musician.id !== this.props.currentBand.band_leader.id 
 												? <Button 
 													negative
 													onClick={() => this.handleDropMemberClick(member) }
@@ -227,14 +202,19 @@ class BandShow extends React.Component {
 
 										{/* Join or View actions */}
 										{ 
-											!member.musician 
+											!member.musician
 												? <Button 
 													secondary 
-													onClick={() => this.handleOnJoinBand(member)}
+													onClick={() => this.props.handleOnJoinBand(member)}
 													>
 													Join Band
 												</Button> 
 												: <Link to={`/musicians/${member.musician.id}`}><Button primary >View Profile</Button></Link> 
+										}
+										{
+											member.musician 
+												? (this.props.currentUser && member.musician.id === this.props.currentUser.id ? <Button negative onClick={ () => this.props.handleLeaveBand(member) }>Leave Band</Button> : null)
+												: null
 										}
 										{/* ATTEMPT AT LEAVE BAND BUTTON FOR CURRENT USER
 											member.id === this.props.currentUser.id

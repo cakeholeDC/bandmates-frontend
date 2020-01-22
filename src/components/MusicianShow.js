@@ -50,7 +50,7 @@ class MusicianShow extends React.Component {
                                 <p>Age: {currentYear - (new Date(this.state.currentMusician.birthdate).getFullYear() ) }</p>
                                 <p>Playing Since: {this.state.currentMusician.playing_since}</p>
                                 <p>Region: {this.state.currentMusician.region}</p>
-                                { this.props.currentUser.id === this.state.currentMusician.id 
+                                { this.props.currentUser && this.props.currentUser.id === this.state.currentMusician.id 
                                     ? <Button negative>Delete Profile</Button>
                                     : null}
                             </Segment>

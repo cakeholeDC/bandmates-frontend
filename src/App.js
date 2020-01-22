@@ -162,6 +162,55 @@ class App extends React.Component {
 		})
 	}
 
+	handleOnJoinBand = (member) => {
+		let musicianID = this.state.currentUser.id
+
+		const memberConfig = {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				"Accepts": "application/json"
+			},
+			body: JSON.stringify({
+				musician_id: musicianID
+			})
+		}
+
+		fetch(`${MEMBERS_URL}/${member.id}`, memberConfig)
+			.then(res => res.json())
+			.then(updatedBand => {
+				this.setState({
+					bands: [...this.state.bands.filter(oldBand => oldBand.id !== updatedBand.id), updatedBand]
+				})
+			})
+			.catch(error => console.warn(error.message))
+
+	}
+
+	handleLeaveBand = (member) => {
+
+		const memberConfig = {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+				"Accepts": "application/json"
+			},
+			body: JSON.stringify({
+				musician_id: null
+			})
+		}
+
+		fetch(`${MEMBERS_URL}/${member.id}`, memberConfig)
+			.then(res => res.json())
+			.then(updatedBand => {
+				this.setState({
+					bands: [...this.state.bands.filter(oldBand => oldBand.id !== updatedBand.id), updatedBand]
+				})
+			})
+			.catch(error => console.warn(error.message))
+
+	}
+
 	processDeleteBand = (data) => {
 		let okToDelete = window.confirm("Easy there, Yoko. Are you sure you want to do that?")
 
@@ -192,6 +241,8 @@ class App extends React.Component {
 	      />
 	      <MainContainer
 		    bands={ this.state.bands }
+		    handleOnJoinBand={ this.handleOnJoinBand }
+		    handleLeaveBand= {this.handleLeaveBand }
 		    processNewBandForm={ this.processNewBandForm }
 		    processEditBandForm={ this.processEditBandForm }
 		    processDeleteBand={ this.processDeleteBand }
