@@ -27,23 +27,10 @@ class App extends React.Component {
 			.then(res => res.json())
 			.then(musicians  => this.setState({ musicians }))
 
-		let token = localStorage.getItem('token')
-
-		console.log(token)
-		console.log("localStorage =>", localStorage)
+		let token = localStorage.getItem("token")
 
 		if (token) {
-			console.log("Token Found... logging in...")
-
-			//////
-			//FOR DEBUGGING => token => JWT.encode({ musician_id: 1 }, Rails.application.secrets.secret_key_base, 'HS512')
-			// encode method is broken.
-			token = "eyJhbGciOiJIUzUxMiJ9.eyJtdXNpY2lhbl9pZCI6MX0.URNETVMd2MWA7Qu2Tadc2-sMzc1pZTpGKMa56V72FMBhVM-ABvKYmvjSCbtcjIBQb2Eu_yJbb3_MZJOzuJOYgw"
-			localStorage.setItem('token', token)
-			console.log("re-setting for debugging localStorage[token] =>", token)
-			//////
-
-			fetch('http://localhost:3000/profile',{
+			fetch('http://localhost:3000/profile', {
 				method: "GET",
 				headers: {
 					"Authentication": token
@@ -51,14 +38,12 @@ class App extends React.Component {
 			})
 			.then(res => res.json())
 			.then(user => {
-				console.log("token user => ", user)
 				this.setState({
 					currentUser: user,
 					loading: false
 				})
 			})
 		} else {
-			console.log("Token Not Found... Log In will be required...")
 			this.setState({ loading: false })
 		}
 	}
@@ -68,19 +53,17 @@ class App extends React.Component {
 			method: "POST",
 			headers: {
 				'Content-Type': "application/json",
-				"Accepts" : "application/json"
+				"Accept" : "application/json"
 			},
 			body: JSON.stringify(data)
 		}
 		fetch('http://localhost:3000/musicians', newUserConfig)
 			.then(res => res.json())
-			.then(apiResponse => {
-				localStorage.setItem("token", apiResponse.token)
-				console.log("setting localStorage[token] =>", apiResponse.token)
-
+			.then(createdMusician => {
+				localStorage.setItem("token", createdMusician.jwt)
 				this.setState({
-					currentUser: JSON.parse(apiResponse.currentUser),
-					musicians: [...this.state.musicians, JSON.parse(apiResponse.currentUser)]
+					currentUser: JSON.parse(createdMusician.currentUser),
+					musicians: [...this.state.musicians, JSON.parse(createdMusician.currentUser)]
 				})
 			})
 	}
@@ -90,19 +73,21 @@ class App extends React.Component {
 			method: "POST",
 			headers: {
 				'Content-Type': "application/json",
-				"Accepts" : "application/json"
+				"Accept" : "application/json"
 			},
 			body: JSON.stringify(data)
 		}
 		fetch('http://localhost:3000/api/v1/login', userConfig)
 			.then(res => res.json())
 			.then(apiResponse => {
-				localStorage.setItem("token", apiResponse.token)
-				console.log("setting localStorage[token] =>", apiResponse.token)
-
+				if (!apiResponse.error) {
+					console.log(apiResponse.jwt)
+					localStorage.setItem("token", apiResponse.jwt)
 				this.setState({
 					currentUser: JSON.parse(apiResponse.currentUser)
-				})
+				})} else {
+					alert(apiResponse.message)
+				}
 			})
 	}
 

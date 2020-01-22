@@ -29,13 +29,11 @@ class LogInForm extends React.Component {
 
 	processUserForm = (event) => {
 		event.preventDefault()
-		console.log('LoginForm.js => processUserForm(event)', "event=>", event)
 
 		let fallbackImg = 'https://f4.bcbits.com/img/a1368582765_10.jpg'
 
 		let userFormData
 		if (this.state.newAccount){
-			//process new user
 			 userFormData = {
 				username: this.state.username,
 				password: this.state.password,
