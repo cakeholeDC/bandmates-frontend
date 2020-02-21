@@ -3,10 +3,13 @@ import './App.css';
 import NavBar from './components/NavBar'
 import MainContainer from './containers/MainContainer'
 
-const BANDS_URL = 'http://localhost:3000/bands'
-const MUSICIANS_URL = 'http://localhost:3000/musicians'
-const MEMBERS_URL = 'http://localhost:3000/band_memberships'
-
+const BASE_URL = 'https://bandmates-app-api.herokuapp.com'
+const DEV_URL = 'http://localhost:3000'
+const BANDS_URL = `${BASE_URL}/bands`
+const MUSICIANS_URL = `${BASE_URL}/musicians`
+const MEMBERS_URL = `${BASE_URL}/band_memberships`
+const PROFILE_URL = `${BASE_URL}/profile`
+const API_LOGIN = `${BASE_URL}/api/v1/login`
 
 class App extends React.Component {
 	state={
@@ -30,7 +33,7 @@ class App extends React.Component {
 		let token = localStorage.getItem("token")
 
 		if (token) {
-			fetch('http://localhost:3000/profile', {
+			fetch(PROFILE_URL, {
 				method: "GET",
 				headers: {
 					"Authentication": token
@@ -57,7 +60,7 @@ class App extends React.Component {
 			},
 			body: JSON.stringify(data)
 		}
-		fetch('http://localhost:3000/musicians', newUserConfig)
+		fetch(MUSICIANS_URL, newUserConfig)
 			.then(res => res.json())
 			.then(createdMusician => {
 				localStorage.setItem("token", createdMusician.jwt)
@@ -77,7 +80,7 @@ class App extends React.Component {
 			},
 			body: JSON.stringify(data)
 		}
-		fetch('http://localhost:3000/api/v1/login', userConfig)
+		fetch(API_LOGIN, userConfig)
 			.then(res => res.json())
 			.then(apiResponse => {
 				if (!apiResponse.error) {
@@ -212,7 +215,7 @@ class App extends React.Component {
 	}
 
 	deleteMusician = (id) => {
-		fetch(`http://localhost:3000/musicians/${id}`, {
+		fetch(`${MUSICIANS_URL}/${id}`, {
 			method: "DELETE",
 			headers: {
 				'Content-Type': "application/json",
