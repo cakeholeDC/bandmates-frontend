@@ -5,7 +5,10 @@ import BandModal from './BandModal'
 import NewMemberForm from './NewMemberForm'
 import PageNotFound from './PageNotFound'
 
-const MEMBERS_URL = 'http://localhost:3000/band_memberships'
+
+const BASE_URL = 'https://bandmates-app-api.herokuapp.com'
+const DEV_URL = 'http://localhost:3000'
+const MEMBERS_URL = `${BASE_URL}/band_memberships`
 
 class BandShow extends React.Component {
 	constructor(props){
