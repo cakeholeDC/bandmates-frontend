@@ -24,7 +24,7 @@ class NavBar extends Component {
 			<React.Fragment>
 		    	<Menu id="bandmates-nav-bar" size="huge" inverted>
 			        <NavLink to='/' exact>
-						<Menu.Item name='logo'><i class="music icon"></i>BandMates</Menu.Item>
+						<Menu.Item name='logo'><i className="music icon"></i>BandMates</Menu.Item>
 					</NavLink>
 
 					<NavLink to='/bands' exact>

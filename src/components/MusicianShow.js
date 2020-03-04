@@ -75,17 +75,6 @@ class MusicianShow extends React.Component {
                                 <Header as="h4">About {this.props.currentMusician.name}:</Header>
                                 <p>{this.props.currentMusician.bio}</p>
                             </Segment>
-                            <Segment>
-                                <p>Demos:</p>
-                                <iframe 
-                                    title="artist-demos"
-                                    width="100%" 
-                                    height="300" 
-                                    scrolling="no" 
-                                    frameBorder="no" 
-                                    allow="autoplay" 
-                                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/942118192&color=%232165a6&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-                            </Segment>
                         </Grid.Column>
                     </Grid.Row> 
                 </Grid> 

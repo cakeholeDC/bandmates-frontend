@@ -4,7 +4,8 @@ import NavBar from './components/NavBar'
 import MainContainer from './containers/MainContainer'
 
 const BASE_URL = 'https://bandmates-app-api.herokuapp.com'
-const DEV_URL = 'http://localhost:3000'
+// FOR DEVELOPMENT
+// BASE_URL = 'http://localhost:3000'
 const BANDS_URL = `${BASE_URL}/bands`
 const MUSICIANS_URL = `${BASE_URL}/musicians`
 const MEMBERS_URL = `${BASE_URL}/band_memberships`

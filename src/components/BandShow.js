@@ -7,7 +7,8 @@ import PageNotFound from './PageNotFound'
 
 
 const BASE_URL = 'https://bandmates-app-api.herokuapp.com'
-const DEV_URL = 'http://localhost:3000'
+// FOR DEVELOPMENT
+// BASE_URL = 'http://localhost:3000'
 const MEMBERS_URL = `${BASE_URL}/band_memberships`
 
 class BandShow extends React.Component {
