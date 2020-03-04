@@ -22,7 +22,7 @@ class NavBar extends Component {
 	render(){
 		return (
 			<React.Fragment>
-		    	<Menu id="bandmates-nav-bar" size="medium" inverted>
+		    	<Menu id="bandmates-nav-bar" size="huge" inverted>
 			        <NavLink to='/' exact>
 						<Menu.Item name='logo'><i class="music icon"></i>BandMates</Menu.Item>
 					</NavLink>
