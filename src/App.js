@@ -3,9 +3,9 @@ import './App.css';
 import NavBar from './components/NavBar'
 import MainContainer from './containers/MainContainer'
 
-const BASE_URL = 'https://bandmates-app-api.herokuapp.com'
+let BASE_URL = 'https://bandmates-app-api.herokuapp.com'
 // FOR DEVELOPMENT
-// BASE_URL = 'http://localhost:3000'
+BASE_URL = 'http://localhost:3000'
 const BANDS_URL = `${BASE_URL}/bands`
 const MUSICIANS_URL = `${BASE_URL}/musicians`
 const MEMBERS_URL = `${BASE_URL}/band_memberships`
@@ -167,27 +167,32 @@ class App extends React.Component {
 	}
 
 	handleOnJoinBand = (member) => {
-		let musicianID = this.state.currentUser.id
+		if (!this.state.currentUser) {
+			alert("You must sign in to join a band!")
+		} else {
+			let musicianID = this.state.currentUser.id
 
-		const memberConfig = {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json",
-				"Accepts": "application/json"
-			},
-			body: JSON.stringify({
-				musician_id: musicianID
-			})
+			const memberConfig = {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+					"Accepts": "application/json"
+				},
+				body: JSON.stringify({
+					musician_id: musicianID
+				})
+			}
+
+			fetch(`${MEMBERS_URL}/${member.id}`, memberConfig)
+				.then(res => res.json())
+				.then(updatedBand => {
+					this.setState({
+						bands: [...this.state.bands.filter(oldBand => oldBand.id !== updatedBand.id), updatedBand]
+					})
+				})
+				.catch(error => console.warn(error.message))
 		}
 
-		fetch(`${MEMBERS_URL}/${member.id}`, memberConfig)
-			.then(res => res.json())
-			.then(updatedBand => {
-				this.setState({
-					bands: [...this.state.bands.filter(oldBand => oldBand.id !== updatedBand.id), updatedBand]
-				})
-			})
-			.catch(error => console.warn(error.message))
 
 	}
 

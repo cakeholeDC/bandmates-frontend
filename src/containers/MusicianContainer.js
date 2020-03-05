@@ -50,7 +50,7 @@ class MusicianContainer extends React.Component {
 				<Header className="main-header" as='h1'>{this.props.match.url === '/' ? "Available Musicians" : "Musicians"}</Header>
 				{this.props.match.url === '/' ?
 				<React.Fragment>
-					<Button 
+					{/*<Button 
 						secondary
 						circular
 						floated="left" 
@@ -65,7 +65,7 @@ class MusicianContainer extends React.Component {
 						name="next" 
 						onClick={ this.scrollMusicians }
 						><i className="arrow right icon"></i>
-					</Button> 	
+					</Button> */}	
 				</React.Fragment>
 				: <SearchBar
 					onChange={this.onChange}

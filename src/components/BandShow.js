@@ -6,9 +6,9 @@ import NewMemberForm from './NewMemberForm'
 import PageNotFound from './PageNotFound'
 
 
-const BASE_URL = 'https://bandmates-app-api.herokuapp.com'
+let BASE_URL = 'https://bandmates-app-api.herokuapp.com'
 // FOR DEVELOPMENT
-// BASE_URL = 'http://localhost:3000'
+BASE_URL = 'http://localhost:3000'
 const MEMBERS_URL = `${BASE_URL}/band_memberships`
 
 class BandShow extends React.Component {
@@ -142,7 +142,7 @@ class BandShow extends React.Component {
 										<Card.Header as='h1'>{member.instrument.name}</Card.Header>
 										<Divider />
 	                				</Card.Content>
-	                				<Image wrapped ui={false} src={member.musician ? member.musician.img : 'http://ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png' } />
+	                				<Image wrapped ui={false} src={member.musician ? member.musician.img : 'https://pxcom.aero/wp-content/uploads/default-user-icon-profile.png' } />
 									<Card.Content>
 										<Card.Header as='h1'>{ member.musician ? member.musician.username : "This could be YOU!"}</Card.Header>
 										<Card.Meta >{ member.musician ? member.musician.region : null }</Card.Meta>

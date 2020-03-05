@@ -11,7 +11,7 @@ class MainContainer extends React.Component {
 
 	render(){
 		return(
-			<Container>
+			<Container id="bandmates-container">
 				<React.Fragment>
 					{ !this.props.isLoading ? 
 						<Switch>

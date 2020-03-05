@@ -55,7 +55,7 @@ class BandContainer extends React.Component {
 				{this.props.match.url === '/' ?
 				<React.Fragment>
 				
-					<Button 
+					{/*<Button 
 						secondary
 						circular
 						floated="left" 
@@ -70,7 +70,7 @@ class BandContainer extends React.Component {
 						name="next" 
 						onClick={ this.scrollBands }
 						><i className="arrow right icon"></i>
-					</Button> 	
+					</Button>*/} 	
 				</React.Fragment>
 				: <SearchBar
 					onChange={this.onChange}

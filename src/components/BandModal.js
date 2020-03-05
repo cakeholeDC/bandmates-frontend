@@ -1,7 +1,7 @@
 import React from 'react'
 import MUSIC_QUOTES from './music-quotes.js'
 import { Modal, Image, Header, Form, Button } from 'semantic-ui-react'
-// import { Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 
 // const BANDS_URL = 'http://localhost:3000/bands'
@@ -89,6 +89,7 @@ class BandModal extends React.Component {
 		console.log(this.props.currentBand)
 		this.props.processDeleteBand(this.props.currentBand)
 		this.props.disableModal()
+		this.props.history.push(`/bands/`)
 	}
 
 
@@ -122,7 +123,7 @@ class BandModal extends React.Component {
 				        }
 				        <Form.Input fluid name="form_logo" label='Profile Photo' placeholder='www.sweetprofilepics.com/yourband.jpg'  value={ this.state.form_logo }/>
 		                <Form.TextArea name="form_bio" label='Bio' placeholder='Whats your story? Who are your influences? Make it interesting, potential members will see it!'  value={ this.state.form_bio }/>
-			        <Form.Checkbox name="form_checkbox" label="Check boxes are fancy, don't you agree?" checked={false} />
+			        <Form.Checkbox name="form_checkbox" label="I've built this city on Rock & Roll" checked={false} />
 			        <Form.Button floated="left" primary><span role="img" aria-label="rock-and-roll-horns">🤘🏼</span>{ this.props.formData ? "Submit Changes" : "Let's Rock!" }<span role="img" aria-label="rock-and-roll-horns"> 🤘🏼</span></Form.Button>
 			        </Form>
 			        {
@@ -142,4 +143,4 @@ class BandModal extends React.Component {
 	}
 }
 
-export default BandModal
+export default withRouter(BandModal)

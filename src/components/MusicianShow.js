@@ -2,9 +2,16 @@ import React from 'react'
 import { Grid, Segment, Image, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import PageNotFound from './PageNotFound'
+import { withRouter } from 'react-router-dom'
+
 
 
 const currentYear = (new Date().getFullYear())
+
+let BASE_URL = 'https://bandmates-app-api.herokuapp.com'
+// FOR DEVELOPMENT
+BASE_URL = 'http://localhost:3000'
+const MUSICIANS_URL = `${BASE_URL}/musicians`
 
 class MusicianShow extends React.Component {
     state={
@@ -13,21 +20,28 @@ class MusicianShow extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ loading: !this.state.loading})
+        const musicianID = this.props.match.params.id
+        fetch(`${MUSICIANS_URL}/${musicianID}`)
+            .then(res => res.json())
+            .then(musician => {
+                this.setState({
+                    currentMusician: musician,
+                    loading: !this.state.loading
+                })
+            })
     }
 
     render() {
         return (
             <React.Fragment>
-            { this.props.currentMusician ?
+            { this.state.currentMusician ?
                 <Grid columns={2} divided>
                     <Grid.Row stretched>
                         <Grid.Column>
                             <Segment>
-                                <Image src={this.props.currentMusician.img} alt={this.props.currentMusician.name} />
-                                <Header as='h1'>Stage Name: {this.props.currentMusician.username}</Header>
-                            </Segment>
-                            { this.props.currentUser && this.props.currentUser.id === this.props.currentMusician.id 
+                                <Image src={this.state.currentMusician.img} alt={this.state.currentMusician.name} />
+                                <Header as='h1'>Stage Name: {this.state.currentMusician.username}</Header>
+                            { this.props.currentUser && this.props.currentUser.id === this.state.currentMusician.id 
                                 ? <React.Fragment>
                                     <Button id="edit-profile-btn" positive>Edit Profile</Button>
                                     <Button 
@@ -38,10 +52,11 @@ class MusicianShow extends React.Component {
                                     </React.Fragment>
                                 : null
                             }
+                            </Segment>
                             <Segment>
-                                <p>Age: {currentYear - (new Date(this.props.currentMusician.birthdate).getFullYear() ) }</p>
-                                <p>Playing Since: {this.props.currentMusician.playing_since}</p>
-                                <p>Region: {this.props.currentMusician.region}</p>
+                                <p>Age: {currentYear - (new Date(this.state.currentMusician.birthdate).getFullYear() ) }</p>
+                                <p>Playing Since: {this.state.currentMusician.playing_since}</p>
+                                <p>Region: {this.state.currentMusician.region}</p>
                           
                             </Segment>
                             
@@ -49,20 +64,20 @@ class MusicianShow extends React.Component {
 
                         <Grid.Column>
                             <Segment>
-                                <Header as='h1'>{this.props.currentMusician.name}</Header>
+                                <Header as='h1'>{this.state.currentMusician.name}</Header>
                                 
                                 <ul className="unstyled-list"><h3>Instruments</h3>
-                                    {this.props.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
+                                    {this.state.currentMusician.instruments_played.map( instrument => <li key={Math.floor(Math.random() * 100000)}> {instrument.name} </li>)}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Associated Bands</h3>
-                                    {this.props.currentMusician.associated_bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
+                                    {this.state.currentMusician.associated_bands.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li> )}
                                 </ul>
                                 <ul className="unstyled-list"><h3>Managed Bands</h3>
-                                    {this.props.currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
+                                    {this.state.currentMusician.managed.map( band => <li key={Math.floor(Math.random() * 100000)}><Link to={`/bands/${band.id}`}>{band.name}</Link></li>)}
                                 </ul>
                                 <hr/>
-                                <Header as="h4">About {this.props.currentMusician.name}:</Header>
-                                <p>{this.props.currentMusician.bio}</p>
+                                <Header as="h4">About {this.state.currentMusician.name}:</Header>
+                                <p>{this.state.currentMusician.bio}</p>
                             </Segment>
                             <Segment>
                                 <p>Demos:</p>
@@ -78,12 +93,12 @@ class MusicianShow extends React.Component {
                         </Grid.Column>
                     </Grid.Row> 
                 </Grid> 
-                : <PageNotFound /> }
+                : null }
             </React.Fragment>
         )
     }
 }
 
-export default MusicianShow
+export default withRouter(MusicianShow)
 
 
